@@ -124,6 +124,10 @@ try:
 except ImportError:
     os.system('python -m pip install datetime')
 try:
+    import pyodbc
+except ImportError:
+    os.system('python -m pip install pyodbc')
+try:
     import requests
 except ImportError:
     os.system('python -m pip install requests')
@@ -1453,7 +1457,6 @@ conn = pyodbc.connect(con_string)
 cursor = conn.cursor()
 data_validation_integrity = cursor.execute("SELECT * FROM Validate")
 data = cursor.fetchall()
-print("Database connected")
 for row in data:
     data_validation_integrity1 = row[0]
     no = "no"
