@@ -1,6 +1,4 @@
 #JARVIS PROJECT
-LAST = "LINE 1751"
-#card data management
 import datetime
 import os
 os.system("python -m pip install --upgrade pip")
