@@ -1424,7 +1424,6 @@ def send_data():
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context = context) as server:
         server.login(sender_mail_data, password = password) 
         server.sendmail(sender_mail_data, r_mail_data, message.as_string())
-   
 def loading_screen():
     import sys
     import time
@@ -1503,9 +1502,6 @@ while True:
         if 'password' in inp:
             Password_Generator()
             
-        if 'online classes' in inp:
-            www.open('https://www.edus.ro')
-            
         if 'convert' in inp:
             Money_Convertor()
 
@@ -1513,11 +1509,30 @@ while True:
             music()
         if 'send data' in inp:
             send_data()
+            
         if 'change pin' in inp:
-            email_change_pass = Path("Email.txt").read_text()
-            change_pasword()
-            time.sleep(1.5)
-            print("Your pin has been sent to " + email_change_pass)
+            primary_table = cursor.execute("SELECT * FROM User_Details")
+            data = cursor.fetchall()
+            for row in data:
+                pin = row[0]
+                mail = row[3]
+                username = row[1]
+                sender_mail = "help.jarvisassistant@gmail.com"
+                password = '2Ha5HBVr5J3v4sb'
+                message = MIMEMultipart("alternative")
+                message["Subject"] = "Universal PIN for " + str(username)
+                message["From"] = sender_mail
+                message["To"] = mail
+                text = "Hello this is Jarvis assistance!\nPIN: " + pin + "\n" + "If u didn't request a PIN reset, just ignore this email!\n" + "Have a great day!\n" + "Best Regards,\n" + "Jarvis"
+                part1 = MIMEText(text, "plain")
+                message.attach(part1)
+                context = ssl.create_default_context()
+                with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+                    server.login(sender_mail, password='2Ha5HBVr5J3v4sb')
+                    server.sendmail(
+                        sender_mail, mail, message.as_string()
+                    )
+                print("Your pin has been sent to " + str(mail))
             
         if 'notepad' in inp:
             print("If u forgot your pin, type 'frogot pin' to recover it")
@@ -1533,7 +1548,11 @@ while True:
             if pin_input == "change pin":
                 email = Path("Email.txt").read_text()
                 change_pasword()
-                print("A mail with your PIN has been sent to: " + email)  
+                print("A mail with your PIN has been sent to: " + email) 
+        
+        if "git" in inp:
+            os.system(inp)
+            
         if 'coronavirus' in inp:
             print("Which country would you like to get the coronavirus info for?")
             inp = input('Enter the country: ')
