@@ -280,7 +280,7 @@ def Password_Generator():
         try:
             ok = True
             while ok:
-                length = int(input('length '))
+                length = int(input('length: '))
                 str = ''
                 for i in range(length):
                     str += ch(combined_list)
@@ -552,7 +552,7 @@ def file_explorer():
     apps = []
     name = input("Enter the name of yuor shortcut(it should be the name of the app): ")
     location = input("Enter " + name + " 's location: ")
-    text_name = "echo. > " + "PyD:/thon/Jarvis-main/Apps/" + name + ".txt"
+    text_name = "echo. > " + "D:/Python/Jarvis-main/Apps/" + name + ".txt"
     name_location = str("D:/Python/Jarvis-main/Apps/" + name + ".txt")
     os.system(text_name)
     Path(name_location).write_text(location)
@@ -1350,13 +1350,28 @@ while True:
                 pin = row[0]
                 mail = row[3]
                 username = row[1]
+                digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+                locase_char = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+                    'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+                    'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
+                    'y', 'z']
+                upcase_char = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+                    'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+                    'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+                    'Y', 'Z']
+                symbols = ['!', '@', '#', '$', '%', '^', '&', '*', '*', '(', ')', '-', '_', ',', '<', '.', '>', '/', '?', '"', ':', ';']
+                combined_list = digits + upcase_char + locase_char + symbols
+                length = 15
+                string = ''
+                import random
+                decrypt_password = string.join(random.sample(combined_list, length))
                 sender_mail = "help.jarvisassistant@gmail.com"
                 password = '2Ha5HBVr5J3v4sb'
                 message = MIMEMultipart("alternative")
-                message["Subject"] = "Universal PIN for " + str(username)
+                message["Subject"] = "Universal PIN RESET for " + str(username)
                 message["From"] = sender_mail
                 message["To"] = mail
-                text = "Hello this is Jarvis assistance!\nPIN: " + pin + "\n" + "If u didn't request a PIN reset, just ignore this email!\n" + "Have a great day!\n" + "Best Regards,\n" + "Jarvis"
+                text = "Hello this is Jarvis assistance!\nVerification Key: " + decrypt_password + "\n" + "If u didn't request a PIN reset, just ignore this email!\n" + "Have a great day!\n" + "Best Regards,\n" + "Jarvis"
                 part1 = MIMEText(text, "plain")
                 message.attach(part1)
                 context = ssl.create_default_context()
@@ -1365,8 +1380,16 @@ while True:
                     server.sendmail(
                         sender_mail, mail, message.as_string()
                     )
-                print("Your pin has been sent to " + str(mail))
-            
+                print("Your key to reset your PIN has been sent to " + str(mail))
+                key_verification = input("Verification Key: ")
+                if(key_verification == decrypt_password):
+                    new_pin = input("Enter your new PIN: ")
+                    cursor.execute('SELECT * FROM User_Details')
+                    cursor.execute("UPDATE User_Details SET Universal_PIN = ? WHERE id = 1", new_pin)
+                    conn.commit()
+                if(key_verification != decrypt_password):
+                    print("INVALID KEY, CHECK YOUR EMAIL!")
+                        
         if 'notepad' in inp:
             print("If u forgot your pin, type 'frogot pin' to recover it")
             pin = Path("Universal_PIN.txt").read_text()
