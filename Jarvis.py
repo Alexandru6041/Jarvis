@@ -1384,10 +1384,7 @@ while ok:
                 print("A mail with your PIN has been sent to: " + email) 
         
         if "git" in inp:
-            ok = False
-            break
             os.system(inp)
-            ok = True
             
         if 'coronavirus' in inp:
             print("Which country would you like to get the coronavirus info for?")
@@ -1434,7 +1431,7 @@ while ok:
             time.sleep(1)
             Games()
             
-        if 'update' in inp:
+        if('update' in inp and "git" not in inp):
             def update():
                 os.system('python Jarvis.py')
             update()
