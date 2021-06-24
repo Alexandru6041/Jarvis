@@ -552,7 +552,7 @@ def file_explorer():
     apps = []
     name = input("Enter the name of yuor shortcut(it should be the name of the app): ")
     location = input("Enter " + name + " 's location: ")
-    text_name = "echo. > " + "D:/Python/Jarvis-main/Apps/" + name + ".txt"
+    text_name = "echo. > " + "PyD:/thon/Jarvis-main/Apps/" + name + ".txt"
     name_location = str("D:/Python/Jarvis-main/Apps/" + name + ".txt")
     os.system(text_name)
     Path(name_location).write_text(location)
@@ -1325,8 +1325,7 @@ for row in data:
 
 import tkinter as tk
 from tkinter import *
-ok = True
-while ok:
+while True:
     try:
         inp = input('>>>')
         if 'help' in inp:
@@ -1342,7 +1341,8 @@ while ok:
             music()
         if 'send data' in inp:
             send_data()
-            
+        if 'git' in inp:
+            os.system(inp) 
         if 'change pin' in inp:
             primary_table = cursor.execute("SELECT * FROM User_Details")
             data = cursor.fetchall()
@@ -1381,10 +1381,7 @@ while ok:
             if pin_input == "change pin":
                 email = Path("Email.txt").read_text()
                 change_pasword()
-                print("A mail with your PIN has been sent to: " + email) 
-        
-        if "git" in inp:
-            os.system(inp)
+                print("A mail with your PIN has been sent to: " + email)
             
         if 'coronavirus' in inp:
             print("Which country would you like to get the coronavirus info for?")
