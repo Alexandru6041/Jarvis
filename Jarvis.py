@@ -1325,8 +1325,8 @@ for row in data:
 
 import tkinter as tk
 from tkinter import *
-
-while True:
+ok = True
+while ok:
     try:
         inp = input('>>>')
         if 'help' in inp:
@@ -1384,7 +1384,10 @@ while True:
                 print("A mail with your PIN has been sent to: " + email) 
         
         if "git" in inp:
+            ok = False
+            break
             os.system(inp)
+            ok = True
             
         if 'coronavirus' in inp:
             print("Which country would you like to get the coronavirus info for?")
