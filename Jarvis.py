@@ -1468,12 +1468,6 @@ while True:
                     time.sleep(1.5)
                     cmdok = False
                     break
-
-        if 'yt' in inp:
-            url = input('Enter youtube video url: ')
-            url = url[:12]+'ss'+url[12:]
-            www.open(url)
-
         if 'IP' in inp:
             print("Getting your IP... ")
             time.sleep(2)
