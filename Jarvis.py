@@ -475,7 +475,7 @@ def Money_Convertor():
             from_country = input("From Country: ")
             to_country = input("TO Country: ")
             amount = int(input("Amount: "))
-            print("Gathering Information from our trusyworthy provider...")
+            print("Gathering Information from our trustworthy provider...")
             time.sleep(3)
             c.convert(from_country, to_country, amount)
         except KeyError:
@@ -486,13 +486,7 @@ def Money_Convertor():
             print("Amount error! Try Again!")
             print("Error type: ValueError")
             
-def google_search():
-    what = input("What do oyu want to search: ")
-    from selenium import webdriver as wb
-    driver = wb.Chrome('chromedriver.exe')
-    driver.get('https://www.google.com')
-    driver.find_element_by_id('input').send_keys(what)
-    driver.close()
+
 def phone_number_info():
     import requests 
     from bs4 import BeautifulSoup as bs
@@ -618,7 +612,15 @@ def Auto_wifi_connection():
             sys.exit()
 
 def shutdown():
-    os.system("shutdown /s /t 3")
+    current_dir = os.getcwd()
+    full_path = str(current_dir) + "/Communication_Files/Goodbyes/main.txt"
+    with open(full_path, "r") as file:
+        content = file.read()
+        words = list(map(str, content.splitlines()))
+        from random import choice as ch
+        print(ch(words))
+        time.sleep(1)        
+        os.system("shutdown /s /t 3")
 
 def open_app():
     #Move app shortcuts into app folder
@@ -921,17 +923,7 @@ def features():
     print("\n")
     print("TO REPORT ANY BUGS, PLEASE MAIL AT 'alexchelariu834@gmail.com'")
     print("\n")
-    
-def conv_protocol():
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        audio_data = r.record(source, duration=1)
-        engine = pyttsx3.init()
-        print('Listening...')
-        engine.say("I'm Listening:")
-        engine.runAndWait()
-        text = r.recognize_google(r.record(source, duration=5))
-        print(text)
+
 
 def Weather_conv_protocol():
     try:
@@ -948,7 +940,6 @@ def Weather_conv_protocol():
         ip = requests.get("https://api.ipify.org").text
         Ip = ip
         print("Getting location for " + Ip + "...")
-        engine = pyttsx3.init()
         engine.say('Getting location for " + Ip + "..."')
         engine.runAndWait()
         with geoip2.database.Reader('GeoLite2-City_20210105/GeoLite2-City.mmdb') as reader:
@@ -972,7 +963,6 @@ def Weather_conv_protocol():
                 Temperature = current_temperature - 273.15
                 current_pressure = current_pressure * 0.75
                 print("Weather in "  + str(city_name) +  " on " + str(date.today()) + ":")
-                engine = pyttsx3.init()
                 engine.say("Weather in " + str(city_name) + " on " + str(date.today()) + ":")
                 engine.runAndWait()
                 print("Temperature: " + str("%.2f" % Temperature) + ' ' + "°C")
@@ -1125,43 +1115,7 @@ def mail_send():
         server.sendmail(
             sender_mail, r_mail, message.as_string()
         )
-        
-class Stats:
-    def statistics():
-        import sqlite3
-        window = tk.Tk()
-        title = "Jarvis-Statistics"
-        window.geometry("1000x800")
-        window.title(title)
-        import datetime as dt
-        db = SqliteDatabase("info.db")
-        class Meta:
-            database = db
-        current_directory = os.getcwd()
-        con = sqlite3.connect(str(current_directory) + "\info.sql")
-        window.mainloop()
-    def get_stats():
-        ok = True
-        from db_utils import db_connect
-        database_integrity_validation = Path("Sql_stats_validate.txt").read_text()
-        if(database_integrity_validation == "Yes"):
-            print("")
-        elif(database_integrity_validation == "No"):
-            con = db_connect()
-            cur = con.cursor()
-            count_number = 0
-            stats_table = [
-                """
-                """
-            ]
-            cur.execute(stats_table)
-        current_directory = os.getcwd()
-        con = sqlite3.connect(str(current_directory) + "\info.sqlite3")
-        
-        
-
-        
-        
+                
 def send_data():
     def get_size(bytes, suffix = "B"):
         factor = 1024
@@ -1393,8 +1347,6 @@ while True:
             print("Currently " + " there are " + str(string) + " coronavirus cases in " + str(country_name) + " on " + str(date.today()) + '.')
             
         if 'shutdown' in inp:
-            print("Your computer will shutdown in 3 sec")
-            time.sleep(3)
             shutdown()
         
         if 'ip data' in inp:
@@ -1725,7 +1677,6 @@ while True:
                 r = sr.Recognizer()
                 with sr.Microphone() as source:
                     audio_data = r.record(source, duration=1)
-                    engine = pyttsx3.init()
                     print('Listening...')
                     engine.say("I'm Listening:")
                     engine.runAndWait()
@@ -1794,7 +1745,6 @@ while True:
                                 Temperature = current_temperature - 273.15
                                 current_pressure = current_pressure * 0.75
                                 print("Weather in " + str(city_name) +" on " + str(date.today()) + ":")
-                                engine = pyttsx3.init()
                                 engine.say("Weather in " + str(city_name) + " on " + str(date.today()) + ":")
                                 engine.runAndWait()
                                 print("Temperature: " + str("%.2f" % Temperature) + ' ' + "°C")
@@ -1829,7 +1779,6 @@ while True:
 
                         if __name__ == "__main__":
                             try:
-                                engine = pyttsx3.init()
                                 print("Starting currency convertor...")
                                 engine.say("Starting Currency convertor:")
                                 engine.runAndWait()
@@ -1839,39 +1788,31 @@ while True:
                                 to_country = input("TO Country: ")
                                 amount = int(input("Amount: "))
                                 print("Gathering Information from our trustworthy provider...")
-                                engine = pyttsx3.init()
                                 engine.say("Gathering Information from our trustworthy provider:")
                                 engine.runAndWait()
                                 time.sleep(1)
                                 c.convert(from_country, to_country, amount)
                             except KeyError:
                                 print("Unknown Currency! Try Again!")
-                                engine = pyttsx3.init()
                                 engine.say("Unknown Currency: Try Again:")
-                                engine.runAndWait()
                                 print("Error type: KeyError")
-                                engine = pyttsx3.init()
                                 engine.say("Error type: KeyError:")
                                 engine.runAndWait()
                             except ValueError:
                                 print("Amount error! Try Again!")
-                                engine = pyttsx3.init()
                                 engine.say("Amount error: Try Again:")
                                 engine.runAndWait()
                                 print("Error type: ValueError:")
-                                engine = pyttsx3.init()
                                 engine.say("Error type: ValueError:")
                                 engine.runAndWait()
                         
                     if 'password' in text:
                         print("Starting password generator...")
-                        engine = pyttsx3.init()
                         engine.say("Starting password generator:")
                         engine.runAndWait()
                         Password_Generator()
 
                     if 'hello' in text:
-                        engine = pyttsx3.init()
                         with open("Communication_Files/Greetings/main.txt") as file:
                             allText = file.read()
                             words = list(map(str, allText.splitlines()))
@@ -1880,7 +1821,6 @@ while True:
                         engine.runAndWait()
 
                     if 'internet' in text:
-                        engine = pyttsx3.init()
                         engine.say("Do you want a website or just the browser?")
                         engine.runAndWait()
                         r = sr.Recognizer()
@@ -1890,7 +1830,6 @@ while True:
                             text = r.recognize_google(r.listen(source, timeout=5, phrase_time_limit=5, snowboy_configuration=None))
                             print(text)
                         if 'browser' in text:
-                            engine = pyttsx3.init()
                             engine.say("Opening Firefox...")
                             engine.runAndWait()
                             try:
@@ -1901,8 +1840,7 @@ while True:
                             r = sr.Recognizer()
                             with sr.Microphone() as source:
                                 audio_data = r.record(source, duration=1)
-                                engine = pyttsx3.init()
-                                print("Listening to your desired browser: ")
+                                print("Listening to your desired website: ")
                             #inp = input('Enter your desired browser: ')
                                 engine.say("Tell your desired browser...")
                                 engine.runAndWait()
@@ -1931,7 +1869,6 @@ while True:
                                         Auto_wifi_connection()
 
                     if 'sleep' in text:
-                        engine = pyttsx3.init()
                         with open("Communication_Files/Sleep/main.txt") as file:
                             allText = file.read()
                             words = list(map(str, allText.splitlines()))
@@ -1964,14 +1901,12 @@ while True:
                         System_info()
 
                     if 'music' in text:
-                        engine = pyttsx3.init()
                         engine.say("Get ready for the party.: Some cool music is coming right now:")
                         engine.runAndWait()
                         print("Starting Spotify:")
                         os.startfile('C:/Users/alexc/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Spotify.lnk')
 
                     if 'shut down' in text:
-                        engine = pyttsx3.init()
                         print("Your PC will shutdown in 5 seconds...")
                         engine.say("Your PC will shutdown in 5 seconds:")
                         engine.runAndWait()
@@ -1979,7 +1914,6 @@ while True:
                         inp = input("")
 
                     if 'Gmail' in text:
-                        engine = pyttsx3.init()
                         print("Opening gmail...")
                         engine.say("Opening gmail")
                         engine.runAndWait()
@@ -1989,7 +1923,6 @@ while True:
                     
                     if 'games' in text:
                         print("Opening your game lanuncher...")
-                        engine = pyttsx3.init()
                         engine.say("Opening you game launcher")
                         engine.runAndWait()
                         Games()
@@ -2000,7 +1933,6 @@ while True:
                         phone_number_info()
                         
                     if 'IP' in text:
-                        engine = pyttsx3.init()
                         print("Getting your IP...")
                         engine.say("Getting your IP")
                         engine.runAndWait()
@@ -2022,12 +1954,10 @@ while True:
                         from bs4 import BeautifulSoup
                         r = sr.Recognizer()
                         with sr.Microphone() as source:
-                            engine = pyttsx3.init()
                             print("Which country would you like to get the coronavirus info for?")
                             engine.say("Which country would you like to get the coronavirus info for?")
                             engine.runAndWait()
                             audio_data = r.record(source, duration=1)
-                            engine = pyttsx3.init()
                             print("Listening...")
                             engine.say("I'm listening")
                             engine.runAndWait()
@@ -2046,17 +1976,14 @@ while True:
                                 string = results.prettify()
                                 string = re.sub('[^0-9]', '', string)
                                 string = string[4:]
-                                engine = pyttsx3.init()
                                 print("There are " + str(string) + " coronavirus cases in " + str(country_name) + " on " + str(date.today()) + '.')
                                 engine.say("There are " + str(string) + " coronavirus cases in " + str(country_name) + " on " + str(date.today()) + '.')
                                 engine.runAndWait()
                             except AttributeError:
-                                engine = pyttsx3.init()
                                 engine.say("Unknown country, try again!")
                                 print("Unknown country, try again!")
                                 engine.runAndWait()
                             except ConnectionError:
-                                engine = pyttsx3.init()
                                 engine.say("Check your internet connection and try again!")
                                 print("Check your internet connection and try again!")
                                 engine.runAndWait()
@@ -2065,7 +1992,6 @@ while True:
                         r = sr.Recognizer()
                         with sr.Microphone() as source:
                             audio_data = r.record(source, duration=1)
-                            engine = pyttsx3.init()
                             print("Listening to your desired browser: ")
                             #inp = input('Enter your desired browser: ')
                             engine.say("Tell me your desired browser...")
@@ -2114,50 +2040,42 @@ while True:
                                 print ("{:<30}|  {:<}".format(i, "ENCODING ERROR"))
                     
                     if 'stop conversation' in text:
-                        engine = pyttsx3.init()
                         engine.say("OK, it's your wish!")
                         engine.runAndWait()
                         ok = False
                         
                     if 'deactivate' in text:
                         print("Goodbye! Have a nice day!")
-                        engine = pyttsx3.init()
                         engine.say("Goodbye: Have a nice day:")
                         engine.runAndWait()
                         exit_arack()
                         
                     if 'text mode' in text:
-                        engine = pyttsx3.init()
                         engine.say("OK, it's your wish!")
                         engine.runAndWait()
                         ok = False
             except TimeoutError:
-                engine = pyttsx3.init()
                 print("Process timed out. We are sorry for this but I will return u to text mode.")
                 engine.say("Process timed out. We are sorry for this but I will return u to text mode")
                 engine.runAndWait()
                 ok = False
             except IndentationError:
                 print("Indendatioon error. Check if u 'tabbed' your lines correctly!")
-                engine = pyttsx3.init()
                 engine.say("Indendatioon error. Check if u 'tabbed' your lines correctly!")
                 engine.runAndWait()
                 sys.exit()
             except sr.UnknownValueError as Exception:
-                engine = pyttsx3.init()
                 print("No audio detected, you will be returned to text mode.")
                 engine.say("No audio detected, you will be returned to text mode.")
                 engine.runAndWait()
                 ok = False
             except sr.WaitTimeoutError as Exception:
-                engine = pyttsx3.init()
                 print("Process timed out. We are sorry for this but we will return u to text mode.")
                 engine.say("Process timed out. We are sorry for this but we will return u to text mode.")
                 engine.runAndWait()
                 ok = False
                 inp = input('>>>')
             except socket.gaierror and urllib.error.URLError and sr.RequestError as Exception:
-                engine = pyttsx3.init()
                 print("No internet connection detected! Check your WiFi connection and try again!")
                 engine.say("No internet connection detected! Check your WiFi connection and try again!")
                 engine.runAndWait()
@@ -2256,4 +2174,3 @@ while True:
                         print("SSID = " + name)
                         print("Password = " + key)
                         sys.exit()
-                        
