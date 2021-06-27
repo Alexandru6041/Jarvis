@@ -485,37 +485,6 @@ def Money_Convertor():
         except ValueError:
             print("Amount error! Try Again!")
             print("Error type: ValueError")
-            #inp = input('>>>')
-
-def developer_mode():
-    password = Path('developer_password.txt').read_text()
-    pssinp = input("Enter developer key: ")
-    if(password == pssinp):
-        from ipdata import ipdata
-        ipdata = ipdata.IPData('cb885e8fa8f25a578285d2043c59d2dc6f54a77b87cb6455f3d7c30f')
-        ip = requests.get("https://api.ipify.org").text
-        print("Access GRANTED!")
-        hostname = socket.gethostname()
-        ips = Path("Trusted_IP.json").read_text()
-        ips = js.loads(ips)
-        if ip not in ips:
-            q = input("Do you want me to trust this comuter: \n" + "IP: " + ip + "\n hostname: " + hostname + "? ")
-            if("yes" in q):
-                ips.append(ip)
-                ips = js.dumps(ips)
-                Path("Trusted_IP.json").write_text(ips)
-                print(ip + " is trusted from now on!")
-            if("no" in q):
-                print(ip + " will not be trusted from now on!")
-        print("File Access Granted!")
-        import win32api
-        import win32con
-        location_working_folder = os.getcwd()
-        win32api.SetFileAttributes(location_working_folder,win32con.FILE_ATTRIBUTE_NORMAL)
-        print("File Folder: " + location_working_folder)
-    else:
-        print("Access DENIED! INCORECT PASSWORD!")
-                
             
 def google_search():
     what = input("What do oyu want to search: ")
@@ -1668,7 +1637,37 @@ while True:
                         print("Unable to connect to Wi-Fi!")
                         Auto_wifi_connection()
         if 'developer mode' in inp:
-            developer_mode()
+            cursor.execute("SELECT * FROM User_Details")
+            data = cursor.fetchall()
+            for row in data:
+                password = row[2]
+                pssinp = input("Enter developer key: ")
+                if(password == pssinp):
+                    from ipdata import ipdata
+                    ipdata = ipdata.IPData('cb885e8fa8f25a578285d2043c59d2dc6f54a77b87cb6455f3d7c30f')
+                    ip = requests.get("https://api.ipify.org").text
+                    print("Access GRANTED!")
+                    hostname = socket.gethostname()
+                    ips = Path("Trusted_IP.json").read_text()
+                    ips = js.loads(ips)
+                    if ip not in ips:
+                        q = input("Do you want me to trust this comuter: \n" +"IP: " + ip + "\nHostname: " + hostname + "? ")
+                        if("yes" in q):
+                            ips.append(ip)
+                            ips = js.dumps(ips)
+                            Path("Trusted_IP.json").write_text(ips)
+                            print(ip + " is trusted from now on!")
+                        if("no" in q):
+                            print(ip + " will not be trusted from now on!")
+                    print("File Access Granted!")
+                    import win32api
+                    import win32con
+                    location_working_folder = os.getcwd()
+                    win32api.SetFileAttributes(
+                        location_working_folder, win32con.FILE_ATTRIBUTE_NORMAL)
+                    print("File Folder: " + location_working_folder)
+                else:
+                    print("Access DENIED! INCORECT PASSWORD!")
         if 'secret' in inp:
             print("Get Ready!")
             time.sleep(1)
