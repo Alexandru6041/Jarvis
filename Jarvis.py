@@ -118,6 +118,10 @@ try:
 except ImportError:
     os.system("pytho -m pip install matplotlib")
 try:
+    from tabulate import tabulate
+except ImportError:
+    os.system("pytho -m pip install tabulate")
+try:
     import datetime as dt
 except ImportError:
     os.system('python -m pip install datetime')
@@ -133,6 +137,10 @@ try:
     import socket
 except ImportError:
     os.system('python -m pip install socket')
+try:
+    from tabulate import *
+except ImportError:
+    os.system("python -m pip install tabulate")
 try:
     import random as rnd
 except ImportError:
@@ -877,10 +885,27 @@ def System_info():
     net_io = psutil.net_io_counters()
     print(f"Total Bytes Sent: {get_size(net_io.bytes_sent)}")
     print(f"Total Bytes Received: {get_size(net_io.bytes_recv)}")
+
 def Speedtest():
+    from tabulate import tabulate
+    import speedtest
     st = speedtest.Speedtest()
-    print("Download speed: " + str(st.download()))
-    print("Upload speed: " + str(st.upload()))
+    upload_speed = round(st.upload() / 1_000_000, 2)
+    download_speed = round(st.download() / 1_000_000, 2)
+    speed_combined = upload_speed + download_speed
+    full_speed = round(speed_combined / 1_000_000, 2)
+    ping = st.results.ping
+    server = []
+    st.get_servers(server)
+    data = {
+        "Speed": [str(speed_combined) + " Mbps"],
+        "Upload": [str(upload_speed) + " Mbps"],
+        "Download": [str(download_speed) + " Mbps"],
+        "Ping": [str(ping) + " ms"]
+    }
+    table = tabulate(data, headers = "keys", tablefmt="pretty")
+    print(str(table))
+
 def features():
     print("###########################################")
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
