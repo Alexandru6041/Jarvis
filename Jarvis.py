@@ -90,6 +90,10 @@ try:
 except ImportError:
     os.system('python -m pip install requests')
 try:
+    from pynput.keyboard import Key, Controller
+except ImportError:
+    os.system("python -m pip install pynput")
+try:
     import time
 except ImportError:
     os.system('python -m pip install time')
@@ -116,11 +120,11 @@ except ImportError:
 try:
     from matplotlib import *
 except ImportError:
-    os.system("pytho -m pip install matplotlib")
+    os.system("python -m pip install matplotlib")
 try:
     from tabulate import tabulate
 except ImportError:
-    os.system("pytho -m pip install tabulate")
+    os.system("python -m pip install tabulate")
 try:
     import datetime as dt
 except ImportError:
@@ -1485,6 +1489,12 @@ while True:
                 file_loc = "D:/Python/Jarvis-main/Apps/" + filename + ".txt"
                 shortcut = Path(str(file_loc)).read_text()
                 os.startfile(shortcut)
+                if filename == "spotify":
+                    from pynput.keyboard import Key, Controller
+                    time.sleep(1.5)
+                    keyboard = Controller()
+                    keyboard.press(Key.space)
+                    keyboard.release(Key.space)
             except FileNotFoundError:
                 print("File not found")
             except Warning as w:
@@ -1692,10 +1702,13 @@ while True:
         with open("Communication_Files/Greetings/main.txt") as file:
             allText = file.read()
             words = list(map(str, allText.splitlines()))
-        username = Path('Username.txt').read_text()
-        from random import choice as ch
-        engine.say(ch(words))
-        engine.runAndWait()
+        user_details = cursor.execute("SELECT * FROM User_Details")
+        data = cursor.fetchall()
+        for row in data:
+            username = row[1]  
+            from random import choice as ch
+            engine.say(ch(words) + username)
+            engine.runAndWait()
         ok = True
         while ok:
             try:
