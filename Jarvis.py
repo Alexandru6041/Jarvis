@@ -6,6 +6,10 @@ from turtle import stamp
 os.system('python -m pip install pipwin')
 os.system('python -m pip install wheel')
 try:
+    from cryptography import *
+except ImportError:
+    os.system("python -m pip install cryptography")
+try:
     from peewee import *
 except ImportError:
     os.system('python -m pip install peewee')
