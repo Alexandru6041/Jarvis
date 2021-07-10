@@ -1124,30 +1124,6 @@ def change_pasword():
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         server.login(sender_mail, password=password)
         server.sendmail(sender_mail, mail_to_send, message.as_string())
-def mail_send():
-    import smtplib, ssl
-    from email.mime.text import MIMEText
-    from email.mime.multipart import MIMEMultipart
-    import json
-    import urllib3
-    import urllib
-    import requests
-    from email.mime.base import MIMEBase
-    sender_mail = "arackemail@gmail.com"
-    password = '2Ha5HBVr5J3v4sb'
-    message = MIMEMultipart("alternative")
-    message["Subject"] = input("Subject: ")
-    message["From"] = print("Form: " + str(sender_mail))
-    message["To"] = r_mail = input("To: ")
-    text = input("Compose: ")
-    part1 = MIMEText(text, "plain")
-    message.attach(part1)
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-        server.login(sender_mail, password='2Ha5HBVr5J3v4sb')
-        server.sendmail(
-            sender_mail, r_mail, message.as_string()
-        )
                 
 def send_data():
     def get_size(bytes, suffix = "B"):
@@ -1493,12 +1469,13 @@ while True:
                 file_loc = "D:/Python/Jarvis-main/Apps/" + filename + ".txt"
                 shortcut = Path(str(file_loc)).read_text()
                 os.startfile(shortcut)
-                if filename == "spotify":
+                if(filename == "spotify" or filename == "Spotify" or filename == "SPOTIFY"):
                     from pynput.keyboard import Key, Controller
                     time.sleep(1.5)
+                    space_key = Key.space
                     keyboard = Controller()
-                    keyboard.press(Key.space)
-                    keyboard.release(Key.space)
+                    keyboard.press(space_key)
+                    keyboard.release(space_key)
             except FileNotFoundError:
                 print("File not found")
             except Warning as w:
@@ -1665,13 +1642,7 @@ while True:
             print("Generating the Secret...")
             time.sleep(2)
             Secret()
-
-        
-        if 'send email' in inp:
-            print("Connecting to email...")
-            time.sleep(1.5)
-            mail_send()
-
+            
         if 'speedtest' in inp:
             Speedtest()
             
