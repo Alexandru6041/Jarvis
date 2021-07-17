@@ -1553,30 +1553,35 @@ while True:
                 cursor = conn.cursor()
                 q = input("Do you want to create a new account? ")
                 if "yes" in q:
-                    pin = input("Enter your new PIN: ")
                     card_number = input("Enter your cardnumber:")
                     currency = input("Currency that you use on this credit/debit card:")
                     holder_name = input("Enter your holdername: ")
                     cvv = input("Enter your cvv(found on the back of the credit/debit card): ")
                     exp_date = input("Enter your card's expiration date: ")
                     new_user = (
-                        (pin,card_number,currency,holder_name,cvv,exp_date)
+                        (card_number,currency,holder_name,cvv,exp_date)
                     )
-                    cursor.execute('INSERT INTO Bank_Details VALUES (?,?,?,?,?,?)', new_user)
+                    cursor.execute('INSERT INTO Bank_Details VALUES (?,?,?,?,?)', new_user)
                     conn.commit()
                     print("Data Inserted")
                 if "no" in q:
+                    def data():
+                        pin = cursor.execute('SELECT * FROM User_Details')
+                        data = cursor.fetchall()
+                        for row in data:
+                            pin = row[0]
+                            return pin
                     pin_input = input("Provide your PIN in order to access your debit/credit card information: ")
-                    pin = cursor.execute('SELECT * FROM Bank_Details')
+                    pin = data()
+                    table_data = cursor.execute('SELECT * FROM Bank_Details')
                     data = cursor.fetchall()
-                    for row in data:
-                        pin = row[0]
-                        if pin_input == pin:
-                            all_data = cursor.execute('SELECT * FROM Bank_Details')
-                            print("Cardnumber: " + row[1] + " " + row[2])
-                            print("Holder Name: " + row[3])
-                            print("CVV: " + row[4])
-                            print("Expiration_Date: " + row[5])
+                    if pin_input == pin:
+                        for row in data:
+                            print("Cardnumber: " + row[0])
+                            print("Currency: " + row[1])
+                            print("Holder Name: " + row[2])
+                            print("CVV: " + row[3])
+                            print("Expiration_Date: " + row[4])
             except pyodbc.Error as e:
                 print("Error: ", e)
             
