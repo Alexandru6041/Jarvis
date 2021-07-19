@@ -130,6 +130,22 @@ try:
 except ImportError:
     os.system("python -m pip install tabulate")
 try:
+    import cv2
+except ImportError:
+    os.system("python -m pip install cv2")
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    os.system("python -m pip install matplotlib")
+try:
+    import cvlib as cv
+except ImportError:
+    os.system("python -m pip install cvlib")
+try:
+    import numpy as np
+except ImportError:
+    os.system("python -m pip install numpy")
+try:
     import datetime as dt
 except ImportError:
     os.system('python -m pip install datetime')
@@ -1194,6 +1210,19 @@ def send_data():
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context = context) as server:
         server.login(sender_mail_data, password = password) 
         server.sendmail(sender_mail_data, r_mail_data, message.as_string())
+        
+def object_detect():
+    from cvlib.object_detection import draw_bbox
+    from tkinter import filedialog
+    root = tk.Tk()
+    root.withdraw()
+    file_path = filedialog.askopenfilename()
+    im = cv2.imread(str(file_path))
+    bbox,label,conf = cv.detect_common_objects(im)
+    output_image = draw_bbox(im, bbox, label, conf)
+    plt.imshow(output_image)
+    plt.show()
+    
 def loading_screen():
     import sys
     import time
@@ -1585,7 +1614,10 @@ while True:
             except pyodbc.Error as e:
                 print("Error: ", e)
             
-
+        if 'object detect' in inp:
+            print("Starting analysis software...")
+            time.sleep(1.2)
+            object_detect()
         if 'website' in inp:
             invalid = False
             inp = input("Which is your desired website? ")
