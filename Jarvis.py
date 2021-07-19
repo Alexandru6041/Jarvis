@@ -1212,16 +1212,19 @@ def send_data():
         server.sendmail(sender_mail_data, r_mail_data, message.as_string())
         
 def object_detect():
-    from cvlib.object_detection import draw_bbox
-    from tkinter import filedialog
-    root = tk.Tk()
-    root.withdraw()
-    file_path = filedialog.askopenfilename()
-    im = cv2.imread(str(file_path))
-    bbox,label,conf = cv.detect_common_objects(im)
-    output_image = draw_bbox(im, bbox, label, conf)
-    plt.imshow(output_image)
-    plt.show()
+    try:
+        from cvlib.object_detection import draw_bbox
+        from tkinter import filedialog
+        root = tk.Tk()
+        root.withdraw()
+        file_path = filedialog.askopenfilename()
+        im = cv2.imread(str(file_path))
+        bbox,label,conf = cv.detect_common_objects(im)
+        output_image = draw_bbox(im, bbox, label, conf)
+        plt.imshow(output_image)
+        plt.show()
+    except Error as e:
+        print(e)
     
 def loading_screen():
     import sys
@@ -1481,9 +1484,7 @@ while True:
                     print ("{:<30}|  {:<}".format(i, "ENCODING ERROR"))
 
         if 'system' in inp:
-            System_info()
-        if 'stats' in inp:
-            Stats.get_stats()   
+            System_info() 
         if "add app" in inp:
             file_explorer()
         if 'exit' in inp:
@@ -1614,10 +1615,10 @@ while True:
             except pyodbc.Error as e:
                 print("Error: ", e)
             
-        if 'object detect' in inp:
-            print("Starting analysis software...")
+        if 'object detect' in inp and "git" not in inp:
             time.sleep(1.2)
             object_detect()
+            
         if 'website' in inp:
             invalid = False
             inp = input("Which is your desired website? ")
