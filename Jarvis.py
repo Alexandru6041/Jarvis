@@ -1211,20 +1211,7 @@ def send_data():
         server.login(sender_mail_data, password = password) 
         server.sendmail(sender_mail_data, r_mail_data, message.as_string())
         
-def object_detect():
-    try:
-        from cvlib.object_detection import draw_bbox
-        from tkinter import filedialog
-        root = tk.Tk()
-        root.withdraw()
-        file_path = filedialog.askopenfilename()
-        im = cv2.imread(str(file_path))
-        bbox,label,conf = cv.detect_common_objects(im)
-        output_image = draw_bbox(im, bbox, label, conf)
-        plt.imshow(output_image)
-        plt.show()
-    except Error as e:
-        print(e)
+
     
 def loading_screen():
     import sys
@@ -1617,7 +1604,36 @@ while True:
             
         if 'object detect' in inp and "git" not in inp:
             time.sleep(1.2)
-            object_detect()
+            try:
+                from cvlib.object_detection import draw_bbox
+                from tkinter import filedialog
+                root = tk.Tk()
+                root.withdraw()
+                file_path = filedialog.askopenfilename()
+                im = cv2.imread(str(file_path))
+                bbox, label, conf = cv.detect_common_objects(im)
+                output_image = draw_bbox(im, bbox, label, conf)
+                plt.imshow(output_image)
+                plt.show()
+                objects = []
+                legth = len(label)
+                i = 0
+
+                def search():
+                    global i
+                    while i < legth:
+                        object_i = label[i]
+                        i += 1
+                        initial = str(object_i) + ": " + str(label.count(object_i))
+                        if object_i not in objects:
+                            print(initial)
+                        objects.append(object_i)
+                        if object_i in objects:
+                            search()
+                search()
+
+            except AttributeError:
+                print("exited from filedialog")
             
         if 'website' in inp:
             invalid = False
