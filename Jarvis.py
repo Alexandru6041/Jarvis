@@ -1615,10 +1615,9 @@ while True:
                 output_image = draw_bbox(im, bbox, label, conf)
                 plt.imshow(output_image)
                 plt.show()
-                objects = []
                 legth = len(label)
+                objects = []
                 i = 0
-
                 def search():
                     global i
                     while i < legth:
