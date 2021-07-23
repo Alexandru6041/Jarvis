@@ -1140,83 +1140,7 @@ def change_pasword():
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         server.login(sender_mail, password=password)
         server.sendmail(sender_mail, mail_to_send, message.as_string())
-                
-def send_data():
-    def get_size(bytes, suffix = "B"):
-        factor = 1024
-        for unit in ["", "K", "M", "G", "T", "P"]:
-            if bytes < factor:
-                return f"{bytes:.2f}{unit}{suffix}"
-            bytes = bytes / factor
-    system_info = "=====System Information====="
-    uname = platform.uname()
-    unamesystem = f"System: {uname.system}"
-    uname_node = f"Node Name: {uname.node}"
-    release = f"Release: {uname.release}"
-    version = f"Version: {uname.version}"
-    machine = f"Machine: {uname.machine}"
-    processor = f"Processor: {uname.processor}"
-    cpuinfo = "=====CPU INFO====="
-    phisical_cores = f"Physical Cores: ",psutil.cpu_count(logical=False)
-    Total_cores = f"Total Cores: ",psutil.cpu_count(logical=True)
-    cpufreq = psutil.cpu_freq()
-    Max_freq = f"Max Frequency: {cpufreq.max:.2f}Mhz"
-    Min_freq =  f"Min Frequency: {cpufreq.min:.2f}Mhz"
-    Current_Freq = f"Current Frequency: {cpufreq.current:.2f}Mhz"
-    svem = psutil.virtual_memory()
-    RAM = "=====RAM INFO====="
-    Total_RAM = f"Total RAM:{get_size(svem.total)}"
-    Avaliable_RAM = f"{get_size(svem.available)}"
-    Used_RAM = f"{get_size(svem.used)}"
-    Percentage_USE_RAM = f"{get_size(svem.percent)}%"
-    Partition = "=====Partition Info====="
-    partitions = psutil.disk_partitions()
-    for partition in partitions:
-        Device = f"=== Device: {partition.device} ==="
-        Mountpoint = f"Mountpoint: {partition.mountpoint}"
-        File_system_type = f"File system type: {partition.fstype}"
-        try:
-            partition_usage = psutil.disk_usage(partition.mountpoint)
-        except PermissionError:
-            continue
-        Total_size = f"Total Size: {get_size(partition_usage.total)}"
-        Used = f"Used: {get_size(partition_usage.used)}"
-        Free = f"Free: {get_size(partition_usage.free)}"
-        Percetange = f"Percentage: {partition_usage.percent}%"
-    disk_io = psutil.disk_io_counters()
-    Total_Read = f"Total Read: {get_size(disk_io.read_bytes)}"
-    Total_Write = f"Total Write: {get_size(disk_io.write_bytes)}"
-    from ipdata import ipdata
-    import geoip2.database
-    cursor.execute("SELECT * FROM User_Details")
-    data = cursor.fetchall()
-    for row in data:
-        email = row[3]
-    ipdata_data = ipdata.IPData('cb885e8fa8f25a578285d2043c59d2dc6f54a77b87cb6455f3d7c30f')
-    ip = requests.get('https://api.ipify.org').text
-    sender_mail_data = "help.jarvisassistant@gmail.com"
-    password = "2Ha5HBVr5J3v4sb"
-    r_mail_data = email
-    message = MIMEMultipart("alternative")
-    Subject = "Information for " + ip
-    with geoip2.database.Reader("GeoLite2-City_20210105/GeoLite2-City.mmdb") as reader:
-        ip_address_location = reader.city(ip)
-        ip_rasa = ip_address_location.city.name
-        city_name = ip_rasa
-    message["Subject"] = Subject
-    message["From"] = sender_mail_data
-    message["To"] = email
-    hostname = socket.gethostname()
-    text1 = "User's IP is: " + str(ip) + "\n" + "Hostname: " + str(hostname) + "\n" + "User's city(by IPv4) is: " + str(city_name) + "\n" + "\n" + str(system_info) + "\n" + str(unamesystem) + "\n" + str(uname_node) + "\n" + str(release) + "\n" + str(version) + "\n" + str(machine) + "\n" + str(processor) + "\n" + "\n" + str(cpuinfo) + "\n" + str(phisical_cores) + "\n" + str(Total_cores) + "\n" + str(Max_freq) + "\n" + str(Min_freq) + "\n" + str(Current_Freq) + "\n" + "\n" + str(RAM) + "\n" + str(Total_RAM) + "\n" + str(Avaliable_RAM) + "\n" + str(Used_RAM) + "\n" + str(Percentage_USE_RAM) + "\n" + "\n" + str(Partition) + "\n" + str(Device) + "\n" + str(Mountpoint) + "\n" + str(File_system_type) + "\n" + str(Total_size) + "\n" + str(Used) + "\n" + str(Free) + "\n" + str(Percetange) + "\n" + "\n" + "======IO=====" + "\n" + str(Total_Read) + "\n" + str(Total_Write)
-    part1 = MIMEText(text1, "plain")
-    message.attach(part1)
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context = context) as server:
-        server.login(user="help.jarvisassistant@gmail.com", password="2Ha5HBVr5J3v4sb")
-        server.sendmail(sender_mail_data, r_mail_data, message.as_string())
         
-
-    
 def loading_screen():
     import sys
     import time
@@ -1294,8 +1218,6 @@ while True:
 
         if 'music' in inp:
             music()
-        if 'send data' in inp:
-            send_data()
         if 'git' in inp:
             os.system(inp) 
         if 'change pin' in inp:
