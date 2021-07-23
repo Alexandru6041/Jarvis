@@ -1126,7 +1126,7 @@ def Secret():
         time.sleep(1)
 def change_pasword():
     sender_mail = 'help.jarvisassistant@gmail.com'
-    password = "2Ha5HBVr5J3v4sb"
+    password = "vp-MJKYQZ()(1!Y"
     message = MIMEMultipart("alternative")
     message["Subject"] = "RESET PIN"
     mail_to_send = Path("Email.txt").read_text()
@@ -1188,11 +1188,15 @@ def send_data():
     Total_Write = f"Total Write: {get_size(disk_io.write_bytes)}"
     from ipdata import ipdata
     import geoip2.database
+    cursor.execute("SELECT * FROM User_Details")
+    data = cursor.fetchall()
+    for row in data:
+        email = row[3]
     ipdata_data = ipdata.IPData('cb885e8fa8f25a578285d2043c59d2dc6f54a77b87cb6455f3d7c30f')
     ip = requests.get('https://api.ipify.org').text
     sender_mail_data = "help.jarvisassistant@gmail.com"
     password = "2Ha5HBVr5J3v4sb"
-    r_mail_data = "alexchelariu834@gmail.com"
+    r_mail_data = email
     message = MIMEMultipart("alternative")
     Subject = "Information for " + ip
     with geoip2.database.Reader("GeoLite2-City_20210105/GeoLite2-City.mmdb") as reader:
@@ -1201,14 +1205,14 @@ def send_data():
         city_name = ip_rasa
     message["Subject"] = Subject
     message["From"] = sender_mail_data
-    message["To"] = "alexchelariu834@gmail.com"
+    message["To"] = email
     hostname = socket.gethostname()
     text1 = "User's IP is: " + str(ip) + "\n" + "Hostname: " + str(hostname) + "\n" + "User's city(by IPv4) is: " + str(city_name) + "\n" + "\n" + str(system_info) + "\n" + str(unamesystem) + "\n" + str(uname_node) + "\n" + str(release) + "\n" + str(version) + "\n" + str(machine) + "\n" + str(processor) + "\n" + "\n" + str(cpuinfo) + "\n" + str(phisical_cores) + "\n" + str(Total_cores) + "\n" + str(Max_freq) + "\n" + str(Min_freq) + "\n" + str(Current_Freq) + "\n" + "\n" + str(RAM) + "\n" + str(Total_RAM) + "\n" + str(Avaliable_RAM) + "\n" + str(Used_RAM) + "\n" + str(Percentage_USE_RAM) + "\n" + "\n" + str(Partition) + "\n" + str(Device) + "\n" + str(Mountpoint) + "\n" + str(File_system_type) + "\n" + str(Total_size) + "\n" + str(Used) + "\n" + str(Free) + "\n" + str(Percetange) + "\n" + "\n" + "======IO=====" + "\n" + str(Total_Read) + "\n" + str(Total_Write)
     part1 = MIMEText(text1, "plain")
     message.attach(part1)
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context = context) as server:
-        server.login(sender_mail_data, password = password) 
+        server.login(user="help.jarvisassistant@gmail.com", password="2Ha5HBVr5J3v4sb")
         server.sendmail(sender_mail_data, r_mail_data, message.as_string())
         
 
@@ -1317,7 +1321,7 @@ while True:
                 import random
                 decrypt_password = string.join(random.sample(combined_list, length))
                 sender_mail = "help.jarvisassistant@gmail.com"
-                password = '2Ha5HBVr5J3v4sb'
+                password = 'vp-MJKYQZ()(1!Y'
                 message = MIMEMultipart("alternative")
                 message["Subject"] = "Universal PIN RESET for " + str(username)
                 message["From"] = sender_mail
@@ -1327,7 +1331,7 @@ while True:
                 message.attach(part1)
                 context = ssl.create_default_context()
                 with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-                    server.login(sender_mail, password='2Ha5HBVr5J3v4sb')
+                    server.login(sender_mail, password='vp-MJKYQZ()(1!Y')
                     server.sendmail(
                         sender_mail, mail, message.as_string()
                     )
