@@ -358,134 +358,6 @@ def news():
             print("https://www.nytimes.com" + str(link))
         except Exception as e: 
             print()
-
-def Notepad_start():
-
-    class Notepad:
-        __root = Tk()
-        __thisWidth = 300
-        __thisHeight = 300
-        __thisTextArea = Text(__root)
-        __thisMenuBar = Menu(__root)
-        __thisFileMenu = Menu(__thisMenuBar, tearoff=0)
-        __thisEditMenu = Menu(__thisMenuBar, tearoff=0)
-        __thisHelpMenu = Menu(__thisMenuBar, tearoff=0)
-        __thisScrollBar = Scrollbar(__thisTextArea)
-        __file = None
-
-        def __init__(self, **kwargs):
-            try:
-                self.__root.wm_iconbitmap("Notepad.ico")
-            except:
-                pass
-            try:
-                self.__thisWidth = kwargs['width']
-            except KeyError:
-                pass
-            try:
-                self.__thisHeight = kwargs['height']
-            except KeyError:
-                pass
-
-            self.__root.title("Untitled - Notepad")
-            screenWidth = self.__root.winfo_screenwidth()
-            screenHeight = self.__root.winfo_screenheight()
-            left = (screenWidth / 2) - (self.__thisWidth / 2)
-            top = (screenHeight / 2) - (self.__thisHeight / 2)
-            self.__root.geometry('%dx%d+%d+%d' % (self.__thisWidth,
-                                                self.__thisHeight,
-                                                left, top))
-            self.__root.grid_rowconfigure(0, weight=1)
-            self.__root.grid_columnconfigure(0, weight=1)
-            self.__thisTextArea.grid(sticky=N + E + S + W)
-            self.__thisFileMenu.add_command(label="New",
-                                            command=self.__newFile)
-            self.__thisFileMenu.add_command(label="Open",
-                                            command=self.__openFile)
-            self.__thisFileMenu.add_command(label="Save",
-                                            command=self.__saveFile)
-            self.__thisFileMenu.add_separator()
-            self.__thisFileMenu.add_command(label="Exit",
-                                            command=self.__quitApplication)
-            self.__thisMenuBar.add_cascade(label="File",
-                                        menu=self.__thisFileMenu)
-            self.__thisEditMenu.add_command(label="Cut",
-                                            command=self.__cut)
-            self.__thisEditMenu.add_command(label="Copy",
-                                            command=self.__copy)
-            self.__thisEditMenu.add_command(label="Paste",
-                                            command=self.__paste)
-            self.__thisMenuBar.add_cascade(label="Edit",
-                                        menu=self.__thisEditMenu)
-            self.__thisHelpMenu.add_command(label="About Notepad",
-                                            command=self.__showAbout)
-            self.__thisMenuBar.add_cascade(label="Help",
-                                        menu=self.__thisHelpMenu)
-            self.__root.config(menu=self.__thisMenuBar)
-            self.__thisScrollBar.pack(side=RIGHT, fill=Y)
-            self.__thisScrollBar.config(command=self.__thisTextArea.yview)
-            self.__thisTextArea.config(yscrollcommand=self.__thisScrollBar.set)
-
-        def __quitApplication(self):
-            self.__root.destroy()
-            # exit()
-
-        def __showAbout(self):
-            showinfo("Notepad", "Secure Notepad")
-
-        def __openFile(self):
-            self.__file = askopenfilename(defaultextension=".txt",
-                                        filetypes=[("All Files", "*.*"),
-                                                    ("Text Documents", "*.txt")])
-            if self.__file == "":
-                self.__file = None
-            else:
-                self.__root.title(os.path.basename(self.__file) + " - Notepad")
-                self.__thisTextArea.delete(1.0, END)
-                file = open(self.__file, "r")
-                self.__thisTextArea.insert(1.0, file.read())
-                file.close()
-        #def __getPIN(self):
-
-        def __newFile(self):
-            self.__root.title("Untitled - Notepad")
-            self.__file = None
-            self.__thisTextArea.delete(1.0, END)
-
-        def __saveFile(self):
-            if self.__file == None:
-                # Save as new file
-                self.__file = asksaveasfilename(initialfile='Untitled.txt',
-                                                defaultextension=".txt",
-                                                filetypes=[("All Files", "*.*"),
-                                                        ("Text Documents", "*.txt")])
-                if self.__file == "":
-                    self.__file = None
-                else:
-                    file = open(self.__file, "w")
-                    file.write(self.__thisTextArea.get(1.0, END))
-                    file.close()
-                    self.__root.title(os.path.basename(self.__file) + " - Notepad")
-            else:
-                file = open(self.__file, "w")
-                file.write(self.__thisTextArea.get(1.0, END))
-                file.close()
-
-        def __cut(self):
-            self.__thisTextArea.event_generate("<<Cut>>")
-
-        def __copy(self):
-            self.__thisTextArea.event_generate("<<Copy>>")
-
-        def __paste(self):
-            self.__thisTextArea.event_generate("<<Paste>>")
-
-        def run(self):
-            self.__root.mainloop()
-
-
-    notepad = Notepad(width=600, height=400)
-    notepad.run()
    
 def Money_Convertor():
     class Currency_convertor:
@@ -661,162 +533,6 @@ def open_app():
         os.startfile("D:/Python/Jarvis-main/Apps" + str(file_shortcut) + ".lnk")
     except FileNotFoundError:
         print("File not found")
- 
-def to_do_list():
-    import datetime
-    db = SqliteDatabase('to_do_list.db')
-    class ToDo(Model):
-        task = CharField(max_length=255)
-        timestamp = DateTimeField(default=datetime.datetime.now)
-        done = BooleanField(default=False)
-        protected = BooleanField(default=False)
-
-        class Meta:
-            database = db
-            
-    def clear():
-        """Clear the display"""
-        os.system('cls' if os.name == 'nt' else 'clear')
-
-    def initialize():
-        """Connect to database, build tables if they don't exist"""
-        db.connect()
-        db.create_tables([ToDo], safe=True)
-
-    def view_entries(index, entries, single_entry):
-        """"View to-do list"""
-        clear()
-        # determines which entry is selected for modification
-        index = index % len(entries)
-        if single_entry:  # to see only 1 entry
-            entries = [entries[index]]
-            index = 0
-        else:
-            print('\nJarvis To Do List')
-            print('=' * 40)
-        prev_timestamp = None
-        for ind, entry in enumerate(entries):
-            timestamp = entry.timestamp.strftime('%d/%B/%Y')
-            if timestamp != prev_timestamp:  # same timestamps get printed only once
-                print('\n')
-                print(timestamp)
-                print('=' * len(timestamp))
-                prev_timestamp = timestamp
-            if ind == index:  # placing the selection tick
-                tick = '> '
-            else:
-                tick = '  '
-            print('{}{}'.format(tick, entry.task), end='')
-            if entry.done:
-                print('\t(DONE)', end='')
-            if entry.protected:
-                print('\t <P>', end='')
-            print('')
-        return entries
-
-    def add_entry(index, entries):
-        """Add a new task"""
-        new_task = input('\nTo do: ')
-        if input('Protect [yN]? ').lower().strip() == 'y':
-            protect = True
-        else:
-            protect = False
-        ToDo.create(task=new_task,
-                    protected=protect)
-
-    def modify_entry(index, entries):
-        """Modify selected entry"""
-        entry = view_entries(index, entries, True)[0]
-        print('\n\n')
-        for key, value in sub_menu.items():
-            print('{}) {}'.format(key, sub_menu[key].__doc__))
-        print('q) Back to Main')
-        next_action = input('Action: ')
-        if next_action.lower().strip() in sub_menu:
-            sub_menu[next_action](entry)
-        else:
-            return
-
-    def cleanup_entries(index, entries):
-        """Cleanup: delete completed, non-protected entries older than a week"""
-        if (input('Have you checked that you protected the important stuff? [yN]').lower().strip() == 'y'):
-            now = datetime.datetime.now()
-            for entry in entries:
-                if (now - entry.timestamp > datetime.timedelta(1, 0, 0) and entry.done and not entry.protected):
-                    entry.delete_instance()
-
-
-    def modify_task(entry):
-        """Modify task"""
-        new_task = input('> ')
-        entry.task = new_task
-        entry.save()
-
-
-    def delete_entry(entry):
-        """Erase entry"""
-        if (input('Are you sure [yN]? ').lower().strip() == 'y'):
-            entry.delete_instance()
-
-
-    def toggle_done(entry):
-        """Toggle 'DONE'"""
-        entry.done = not entry.done
-        entry.save()
-
-
-    def toggle_protection(entry):
-        """Toggle 'protected'"""
-        entry.protected = not entry.protected
-        entry.save()
-
-
-    def menu_loop():
-        choice = None
-        index = 0  # shows which entry is selected
-        entries = ToDo.select().order_by(ToDo.timestamp.asc())
-        while choice != 'q':
-            if len(entries) != 0:
-                view_entries(index, entries, False)
-
-                print('\n' + '=' * 40 + '\n')
-                print('Previous/Next: p/n \n')
-            for key, value in main_menu.items():
-                print('{}) {}'.format(key, value.__doc__))
-            print('q) Quit')
-
-            choice = input('\nAction: ')
-            if choice in main_menu:
-                try:
-                    main_menu[choice](index, entries)
-                except ZeroDivisionError:
-                    continue
-                entries = ToDo.select().order_by(ToDo.timestamp.asc())
-
-            elif choice == 'n':
-                index += 1
-            elif choice == 'p':
-                index -= 1
-
-
-    main_menu = OrderedDict([
-        ('a', add_entry),
-        ('m', modify_entry),
-        ('c', cleanup_entries)
-    ])
-
-    sub_menu = OrderedDict([
-        ('m', modify_task),
-        ('d', toggle_done),
-        ('p', toggle_protection),
-        ('e', delete_entry)
-    ])
-
-    if __name__ == '__main__':
-        initialize()
-        menu_loop()
-        db.close()
-
 def ipadress():
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname)
@@ -1099,31 +815,6 @@ def Configure_WIFI():
 def update():
     os.startfile('D:/Arack/Update.py')
 
-def Secret():
-    try:
-        t = turtle.Turtle()
-        s = turtle.Screen()
-        s.bgcolor('black')
-        t.pencolor('white')
-        a = 0
-        b = 0
-        t.speed(0)
-        t.penup()
-        t.goto(0,200)
-        t.pendown()
-        while True:
-            t.forward(a)
-            t.right(b)
-            a+=3
-            b+=1
-            if b == 210:
-                break
-            t.hideturtle()
-        turtle.done()
-    except NameError:
-        print("Something went wrong!")
-        print("Error type: 'NameError' ")
-        time.sleep(1)
 def change_pasword():
     sender_mail = 'help.jarvisassistant@gmail.com'
     password = "vp-MJKYQZ()(1!Y"
@@ -1140,27 +831,6 @@ def change_pasword():
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         server.login(sender_mail, password=password)
         server.sendmail(sender_mail, mail_to_send, message.as_string())
-        
-def loading_screen():
-    import sys
-    import time
-    from time import sleep
-    for i in range(49):
-        sys.stdout.write('\r')
-        sys.stdout.write("[%-10s] %d%%" % ('='*i, 1*i))
-        sys.stdout.flush()
-        sleep(0.05)
-    for i in range(50,98):
-        sys.stdout.write('\r')
-        sys.stdout.write("[%-10s] %d%%" % ('='* i, 1*i))
-        sys.stdout.flush()
-        sleep(0.01)
-    for i in range(99,101):
-        sys.stdout.write('\r')
-        sys.stdout.write("[%-10s] %d%%" % ('='* i, 1*i))
-        sys.stdout.flush()
-        sleep(2)
-    print(" ")
 print("Checking your wifi connection...")
 time.sleep(2)
 check_wifi()
@@ -1267,21 +937,6 @@ while True:
                 if(key_verification != decrypt_password):
                     print("INVALID KEY, CHECK YOUR EMAIL!")
                         
-        if 'notepad' in inp:
-            print("If u forgot your pin, type 'frogot pin' to recover it")
-            pin = Path("Universal_PIN.txt").read_text()
-            pin_input = input("Enter your PIN: ")
-            if pin_input == pin:
-                print("ACCESS GRANTED!")   
-                time.sleep(1.5)
-                Notepad_start()
-                continue
-            if pin_input != pin:
-                print("ACCESS DENIED!")
-            if pin_input == "change pin":
-                email = Path("Email.txt").read_text()
-                change_pasword()
-                print("A mail with your PIN has been sent to: " + email)
             
         if 'coronavirus' in inp:
             print("Which country would you like to get the coronavirus info for?")
@@ -1298,7 +953,7 @@ while True:
             string = results.prettify()
             string = re.sub('[^0-9]', '', string)
             string = string[4:]
-            print("Currently " + " there are " + str(string) + " coronavirus cases in " + str(country_name) + " on " + str(date.today()) + '.')
+            print("Currently " + "there are " + str(string) + " coronavirus cases in " + str(country_name) + " on " + str(date.today()) + '.')
             
         if 'shutdown' in inp:
             shutdown()
@@ -1321,10 +976,6 @@ while True:
             print("Please Wait!")
             time.sleep(1.5)
             news()
-
-        if 'games' in inp:
-            time.sleep(1)
-            Games()
             
         if('update' in inp and "git" not in inp):
             def update():
@@ -1615,18 +1266,9 @@ while True:
                     print("File Folder: " + location_working_folder)
                 else:
                     print("Access DENIED! INCORECT PASSWORD!")
-        if 'secret' in inp:
-            print("Get Ready!")
-            time.sleep(1)
-            print("Generating the Secret...")
-            time.sleep(2)
-            Secret()
             
         if 'speedtest' in inp:
             Speedtest()
-            
-        if 'to do' in inp:
-            to_do_list()
             
         if 'are you' in inp:
             with open("Communication_Files/Wyd/main.txt") as file:
@@ -1912,12 +1554,7 @@ while True:
                         time.sleep(0.5)
                         mail_url = 'https://mail.google.com/mail/u/0/#inbox'
                         www.open(mail_url)
-                    
-                    if 'games' in text:
-                        print("Opening your game lanuncher...")
-                        engine.say("Opening you game launcher")
-                        engine.runAndWait()
-                        Games()
+                        
                     if 'phone number' in text:
                         print("Getting phone number data... ")
                         engine.say("Getting phone number data... ")
