@@ -418,6 +418,7 @@ def exit_arack():
 def file_explorer():
     apps = []
     name = input("Enter the name of yuor shortcut(it should be the name of the app): ")
+    main_folder = os.getcwd()
     location = input("Enter " + name + " 's location: ")
     text_name = "echo. > " + "D:/Python/Jarvis-main/Apps/" + name + ".txt"
     name_location = str("D:/Python/Jarvis-main/Apps/" + name + ".txt")
