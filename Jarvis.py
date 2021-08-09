@@ -232,6 +232,10 @@ try:
 except ImportError:
     os.system('python -m pip install re')
 try:
+    import hashlib
+except ImportError:
+    os.system('python -m pip install hashlib')
+try:
     import subprocess
 except ImportError:
     os.system('python -m pip install subprocess')
@@ -416,12 +420,16 @@ def exit_arack():
     import sys
     sys.exit()
 def file_explorer():
+    from tkinter import filedialog as fd
     apps = []
     name = input("Enter the name of yuor shortcut(it should be the name of the app): ")
     main_folder = os.getcwd()
-    location = input("Enter " + name + " 's location: ")
-    text_name = "echo. > " + "D:/Python/Jarvis-main/Apps/" + name + ".txt"
-    name_location = str("D:/Python/Jarvis-main/Apps/" + name + ".txt")
+    window = tk.Tk()
+    window.withdraw()
+    file_path = fd.askopenfilename()
+    location = str(file_path)
+    text_name = "echo. > " + str(main_folder) + "/Apps/" + name + ".txt"
+    name_location = str(main_folder + "/Apps/" + name + ".txt")
     os.system(text_name)
     Path(name_location).write_text(location)
     shortcuts = Path('shortcut_list.json').read_text()
@@ -531,6 +539,7 @@ def open_app():
     #Move app shortcuts into app folder
     try:
         file_shortcut = input("App Name: ")
+        main_folder = os.getcwd()
         os.startfile("D:/Python/Jarvis-main/Apps" + str(file_shortcut) + ".lnk")
     except FileNotFoundError:
         print("File not found")
@@ -1061,7 +1070,7 @@ while True:
                 print("Apps already added: ")
                 print(options)
                 filename = input("App Name: ")
-                file_loc = "D:/Python/Jarvis-main/Apps/" + filename + ".txt"
+                file_loc =  location_working_folder + "/Apps/" + filename + ".txt"
                 shortcut = Path(str(file_loc)).read_text()
                 os.startfile(shortcut)
                 if(filename == "spotify" or filename == "Spotify" or filename == "SPOTIFY"):
