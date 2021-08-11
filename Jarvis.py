@@ -862,16 +862,113 @@ for row in data:
         Developer_Password = "Cryptospire6041"
         validation_integrity = "yes"
         id = "1"
-        user_data = (
-            (Universal_Password,username, Developer_Password, email,id)
-        )
-        cursor.execute("INSERT INTO User_Details VALUES (?,?,?,?,?)", user_data)
-        conn.commit()
-        cursor.execute("UPDATE Validate SET validation_data_integrity = ? WHERE id = 1", validation_integrity)
-        conn.commit()
+        pin = Universal_Password
+        mail = email
+        username = username
+        main_folder = os.getcwd()
+        os.system("echo. > " + str(main_folder) + "mail.txt")
+        Path("mail.txt").write_text(mail)
+        digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        locase_char = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+            'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+            'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
+            'y', 'z']
+        upcase_char = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+            'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+            'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+            'Y', 'Z']
+        symbols = ['!', '@', '#', '$', '%', '^', '&', '*', '*', '(', ')', '-', '_', ',', '<', '.', '>', '/', '?', '"', ':', ';']
+        combined_list = digits + upcase_char + locase_char + symbols
+        length = 15
+        string = ''
+        import random
+        decrypt_password = string.join(random.sample(combined_list, length))
+        sender_mail = "help.jarvisassistant@gmail.com"
+        password = 'vp-MJKYQZ()(1!Y'
+        message = MIMEMultipart("alternative")
+        message["Subject"] = "Confirm Email " + str(username)
+        message["From"] = sender_mail
+        message["To"] = mail
+        text = "Hello this is Jarvis assistance!\nVerification Key: " + decrypt_password + "\n" + "This verification key is provided in order to confirm your email address! \n" +  "Have a great day!\n" + "Best Regards,\n" + "Jarvis"
+        part1 = MIMEText(text, "plain")
+        message.attach(part1)
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(sender_mail, password='vp-MJKYQZ()(1!Y')
+            server.sendmail(
+                sender_mail, mail, message.as_string()
+            )
+        print("Your key to confirm your email has been sent to " + str(mail))
+        key = input("Verification Key: ")
+        x = 0
+        if(key != decrypt_password):
+            print("After 3 failed attemps you must re-enter your email")
+        while(key != decrypt_password):
+            for _ in range(4):
+                x += 1
+                if(x == 3):
+                    file = open("mail.txt", "r+")
+                    file.truncate(0)
+                    file.close()
+                    x = 0
+                    mail = input("Enter your email: ")
+                    digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+                    locase_char = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+                                'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+                                'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
+                                'y', 'z']
+                    upcase_char = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+                                'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+                                'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+                                'Y', 'Z']
+                    symbols = ['!', '@', '#', '$', '%', '^', '&', '*', '*',
+                            '(', ')', '-', '_', ',', '<', '.', '>', '/', '?', '"', ':', ';']
+                    combined_list = digits + upcase_char + locase_char + symbols
+                    length = 15
+                    string = ''
+                    import random
+                    decrypt_password = string.join(random.sample(combined_list, length))
+                    sender_mail = "help.jarvisassistant@gmail.com"
+                    password = 'vp-MJKYQZ()(1!Y'
+                    message = MIMEMultipart("alternative")
+                    message["Subject"] = "Confirm Email " + str(username)
+                    message["From"] = sender_mail
+                    message["To"] = mail
+                    text = "Hello this is Jarvis assistance!\nVerification Key: " + decrypt_password + "\n" + \
+                        "This verification key is provided in order to confirm your email address! \n" + \
+                        "Have a great day!\n" + "Best Regards,\n" + "Jarvis"
+                    part1 = MIMEText(text, "plain")
+                    message.attach(part1)
+                    context = ssl.create_default_context()
+                    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+                        server.login(sender_mail, password='vp-MJKYQZ()(1!Y')
+                        server.sendmail(
+                            sender_mail, mail, message.as_string()
+                        )
+                    print("Your key to confirm your email has been sent to " + str(mail))
+                    Path("mail.txt").write_text(mail)
+                mail = Path("mail.txt").read_text()
+                key = input("Verification Key: ")
+                if(key == decrypt_password):
+                    print("Email successfully verified! Congrats!")
+                    fine = False
+                    break
+        if(key == decrypt_password):
+            print("Email successfully verified! Congrats!")
+            user_data = (
+                (Universal_Password, username, Developer_Password, email, id)
+            )
+            cursor.execute("INSERT INTO User_Details VALUES (?,?,?,?,?)", user_data)
+            conn.commit()
+            cursor.execute(
+                "UPDATE Validate SET validation_data_integrity = ? WHERE id = 1", validation_integrity)
+            conn.commit()
+            os.system("DEL mail.txt")
+            
     if str(data_validation_integrity1 == "yes"): 
         print("Type 'help' for instructions")
         print("NOTE FROM THE CREATOR: ANY ERROR YOU ENCOUNTER, PLEASE EMAIL IT AT 'help.jarvisassistant@gmail.com'")
+        time.sleep(1)
         cursor.execute("SELECT * FROM User_Details")
         data = cursor.fetchall()
         for row in data:
