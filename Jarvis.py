@@ -947,7 +947,6 @@ for row in data:
                         )
                     print("Your key to confirm your email has been sent to " + str(mail))
                     Path("mail.txt").write_text(mail)
-                mail = Path("mail.txt").read_text()
                 key = input("Verification Key: ")
                 if(key == decrypt_password):
                     print("Email successfully verified! Congrats!")
@@ -955,6 +954,7 @@ for row in data:
                     break
         if(key == decrypt_password):
             print("Email successfully verified! Congrats!")
+            email = Path("mail.txt").read_text()
             user_data = (
                 (Universal_Password, username, Developer_Password, email, id)
             )
