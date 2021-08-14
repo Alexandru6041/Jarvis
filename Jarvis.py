@@ -955,8 +955,10 @@ for row in data:
         if(key == decrypt_password):
             print("Email successfully verified! Congrats!")
             email = Path("mail.txt").read_text()
+            Universal_Password_hash = hashlib.sha512(str(Universal_Password).encode("utf-8")).hexdigest()
+            Developer_Password_hash = hashlib.sha512(str(Developer_Password).encode("utf-8")).hexdigest()
             user_data = (
-                (Universal_Password, username, Developer_Password, email, id)
+                (Universal_Password_hash, username, Developer_Password_hash, email, id)
             )
             cursor.execute("INSERT INTO User_Details VALUES (?,?,?,?,?)", user_data)
             conn.commit()
@@ -1119,25 +1121,6 @@ while True:
             print("Requesting weather reports from our provider...")
             time.sleep(1.5)
             Weather()
-        
-        if 'wifi qr' in inp:
-            inp = input("Do you want to connect to 5GHz or 2.4Ghz network?")
-            if '5' in inp:
-                import pyqrcode as pq
-                ssid = 'TP-Link_2534_5G'
-                security = 'WPA'
-                password = '98565078'
-                qr = pq.create(f'WIFI:S:{ssid};T:{security};P:{password};;')
-                data1 = qr.terminal()
-                qr.png('home_guest_wifi.png')
-                os.startfile('F:/Info/Python/Arack/home_guest_wifi.png')
-            if '2' in inp:
-                ssid = 'TP-Link_2534'
-                security = 'WPA'
-                password = '98565078'
-                qr = pq.create(f'WIFI:S:{ssid};T:{security};P:{password};;')
-                qr.png('home_guest_wifi24.png')
-                os.startfile('F:/Info/Python/Arack/home_guest_wifi24.png')
 
         if 'wifi pass' in inp:
             import subprocess
@@ -1273,9 +1256,10 @@ while True:
                             pin = row[0]
                             return pin
                     pin_input = input("Provide your PIN in order to access your debit/credit card information: ")
-                    pin = data()
+                    pin1 = data()
                     table_data = cursor.execute('SELECT * FROM Bank_Details')
                     data = cursor.fetchall()
+                    pin = hashlib.sha512(str(pin1).encode("utf-8")).hexdigest()
                     if pin_input == pin:
                         for row in data:
                             print("Cardnumber: " + row[0])
@@ -1346,7 +1330,8 @@ while True:
             data = cursor.fetchall()
             for row in data:
                 password = row[2]
-                pssinp = input("Enter developer key: ")
+                pssinp1 = input("Enter developer key: ")
+                pssinp = hashlib.sha512(str(pssinp1).encode("utf-8")).hexdigest()
                 if(password == pssinp):
                     from ipdata import ipdata
                     ipdata = ipdata.IPData('cb885e8fa8f25a578285d2043c59d2dc6f54a77b87cb6455f3d7c30f')
