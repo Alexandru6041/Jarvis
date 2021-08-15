@@ -953,7 +953,6 @@ for row in data:
                     fine = False
                     break
         if(key == decrypt_password):
-            print("Email successfully verified! Congrats!")
             email = Path("mail.txt").read_text()
             Universal_Password_hash = hashlib.sha512(str(Universal_Password).encode("utf-8")).hexdigest()
             Developer_Password_hash = hashlib.sha512(str(Developer_Password).encode("utf-8")).hexdigest()
@@ -978,8 +977,8 @@ for row in data:
             with open("Communication_Files/Greetings/main.txt", "r") as file:
                 allText = file.read()
                 words = list(map(str, allText.splitlines()))
-            from random import choice as ch
-            print(ch(words) + " " + str(username) + "!")
+        from random import choice as ch
+        print(ch(words) + " " + str(username) + "!")
 
 import tkinter as tk
 from tkinter import *
@@ -1039,7 +1038,8 @@ while True:
                 print("Your key to reset your PIN has been sent to " + str(mail))
                 key_verification = input("Verification Key: ")
                 if(key_verification == decrypt_password):
-                    new_pin = input("Enter your new PIN: ")
+                    new_pin1 = input("Enter your new PIN: ")
+                    new_pin = hashlib.sha512(str(new_pin1).encode("utf-8")).hexdigest()
                     cursor.execute('SELECT * FROM User_Details')
                     cursor.execute("UPDATE User_Details SET Universal_PIN = ? WHERE id = 1", new_pin)
                     conn.commit()
@@ -1255,11 +1255,11 @@ while True:
                         for row in data:
                             pin = row[0]
                             return pin
-                    pin_input = input("Provide your PIN in order to access your debit/credit card information: ")
-                    pin1 = data()
+                    pin_input1 = input("Provide your PIN in order to access your debit/credit card information: ")
+                    pin = data()
                     table_data = cursor.execute('SELECT * FROM Bank_Details')
                     data = cursor.fetchall()
-                    pin = hashlib.sha512(str(pin1).encode("utf-8")).hexdigest()
+                    pin_input = hashlib.sha512(str(pin_input1).encode("utf-8")).hexdigest()
                     if pin_input == pin:
                         for row in data:
                             print("Cardnumber: " + row[0])
