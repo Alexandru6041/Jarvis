@@ -822,9 +822,6 @@ def Weather():
 def Configure_WIFI():
     www.open('http://192.168.0.1/webpages/login.html?t=1516243669548')
 
-def update():
-    os.startfile('D:/Arack/Update.py')
-
 def change_pasword():
     sender_mail = 'help.jarvisassistant@gmail.com'
     password = "vp-MJKYQZ()(1!Y"
@@ -1144,13 +1141,12 @@ while True:
         if 'exit' in inp:
             exit_arack()
             
-        if "open" in inp:
+        if "open " in inp:
             try:
                 options = Path('shortcut_list.json').read_text()
-                print("Apps already added: ")
-                print(options)
-                filename = input("App Name: ")
-                file_loc =  location_working_folder + "/Apps/" + filename + ".txt"
+                options = Path('shortcut_list.json').read_text()
+                filename = inp[5:]
+                file_loc = "D:/Python/Jarvis-main/Apps/" + filename + ".txt"
                 shortcut = Path(str(file_loc)).read_text()
                 os.startfile(shortcut)
                 if(filename == "spotify" or filename == "Spotify" or filename == "SPOTIFY"):
@@ -1288,7 +1284,7 @@ while True:
                 i = 0
                 def search():
                     global i
-                    while i < legth:
+                    while i <= legth:
                         object_i = label[i]
                         i += 1
                         initial = str(object_i) + ": " + str(label.count(object_i))
@@ -1419,14 +1415,14 @@ while True:
                     if 'open' in text:
                         try:
                             options = Path('shortcut_list.json').read_text()
-                            print("Apps already added: ")
-                            print(options)
-                            filename = input("App Name: ")
+                            filename = text[5:]
                             file_loc = "D:/Python/Jarvis-main/Apps/" + filename + ".txt"
                             shortcut = Path(str(file_loc)).read_text()
                             os.startfile(shortcut)
                         except FileNotFoundError:
                             print("File not found")
+                            engine.say("File not found")
+                            engine.runAndWait()
                         except Warning as w:
                             print(w)
                             continue
@@ -1611,6 +1607,8 @@ while True:
                         sys.exit()
                         
                     if "update" in text:
+                        def update():
+                            os.system("python Jarvis.py")
                         update()
 
                     if 'news' in text:
@@ -1786,10 +1784,15 @@ while True:
                 engine.runAndWait()
                 sys.exit()
             except sr.UnknownValueError as Exception:
-                print("No audio detected, you will be returned to text mode.")
-                engine.say("No audio detected, you will be returned to text mode.")
+                print("No audio detected.")
+                engine.say("No audio detected.")
                 engine.runAndWait()
-                ok = False
+                with open("Communication_Files/Sleep/main.txt") as file:
+                    allText = file.read()
+                    words = list(map(str, allText.splitlines()))
+                engine.say(ch(words))
+                engine.runAndWait()
+                inp = input('sleeping...')
             except sr.WaitTimeoutError as Exception:
                 print("Process timed out. We are sorry for this but we will return u to text mode.")
                 engine.say("Process timed out. We are sorry for this but we will return u to text mode.")
