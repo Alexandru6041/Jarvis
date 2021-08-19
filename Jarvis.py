@@ -1157,34 +1157,13 @@ while True:
         if "open" in inp:
             try:
                 options = Path('shortcut_list.json').read_text()
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
                 filename = inp[5:]
                 main_folder = os.getcwd()
                 file_loc = filename + ".txt"
-=======
-=======
->>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
-=======
->>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
-=======
->>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
                 print("Apps already added: ")
                 print(options)
                 filename = input("App Name: ")
                 file_loc =  location_working_folder + "/Apps/" + filename + ".txt"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
-=======
->>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
-=======
->>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
-=======
->>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
                 shortcut = Path(str(file_loc)).read_text()
                 os.startfile(shortcut)
                 if(filename == "spotify" or filename == "Spotify" or filename == "SPOTIFY"):
@@ -1453,25 +1432,13 @@ while True:
                     if 'open' in text:
                         try:
                             options = Path('shortcut_list.json').read_text()
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
                             filename = text[5:]
                             main_folder = os.getcwd()
                             file_loc = filename + ".txt"
-=======
-=======
->>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
-=======
->>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
-=======
->>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
                             print("Apps already added: ")
                             print(options)
                             filename = input("App Name: ")
                             file_loc = "D:/Python/Jarvis-main/Apps/" + filename + ".txt"
->>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
                             shortcut = Path(str(file_loc)).read_text()
                             os.startfile(shortcut)
                         except FileNotFoundError:
