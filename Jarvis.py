@@ -1,6 +1,17 @@
 #JARVIS PROJECT
-import datetime
 import os
+import time
+from pathlib import Path
+status = Path("Validation.txt").read_text()
+if(status == "no"):
+    folder = os.getcwd()
+    file = open("Validation.txt", "r+")
+    file.truncate(0)
+    file.close()
+    Path("Validation.txt").write_text("yes")
+    os.system("cd " + folder)
+    os.system("python Jarvis.py")
+import datetime
 os.system("python -m pip install --upgrade pip")
 from turtle import stamp
 os.system('python -m pip install pipwin')
@@ -428,8 +439,8 @@ def file_explorer():
     window.withdraw()
     file_path = fd.askopenfilename()
     location = str(file_path)
-    text_name = "echo. > " + str(main_folder) + "/Apps/" + name + ".txt"
-    name_location = str(main_folder + "/Apps/" + name + ".txt")
+    text_name = "echo. > " + name + ".txt"
+    name_location = str(name + ".txt")
     os.system(text_name)
     Path(name_location).write_text(location)
     shortcuts = Path('shortcut_list.json').read_text()
@@ -437,7 +448,6 @@ def file_explorer():
     shortcuts.append(name)
     shortcuts = js.dumps(shortcuts)
     Path('shortcut_list.json').write_text(shortcuts)
-    
 
 def Auto_wifi_connection():
     def createNewConnection(name, SSID, key):
@@ -976,7 +986,7 @@ for row in data:
                 words = list(map(str, allText.splitlines()))
         from random import choice as ch
         print(ch(words) + " " + str(username) + "!")
-
+Path("Validation.txt").write_text("no")
 import tkinter as tk
 from tkinter import *
 while True:
@@ -1144,9 +1154,9 @@ while True:
         if "open " in inp:
             try:
                 options = Path('shortcut_list.json').read_text()
-                options = Path('shortcut_list.json').read_text()
                 filename = inp[5:]
-                file_loc = "D:/Python/Jarvis-main/Apps/" + filename + ".txt"
+                main_folder = os.getcwd()
+                file_loc = filename + ".txt"
                 shortcut = Path(str(file_loc)).read_text()
                 os.startfile(shortcut)
                 if(filename == "spotify" or filename == "Spotify" or filename == "SPOTIFY"):
@@ -1416,7 +1426,8 @@ while True:
                         try:
                             options = Path('shortcut_list.json').read_text()
                             filename = text[5:]
-                            file_loc = "D:/Python/Jarvis-main/Apps/" + filename + ".txt"
+                            main_folder = os.getcwd()
+                            file_loc = filename + ".txt"
                             shortcut = Path(str(file_loc)).read_text()
                             os.startfile(shortcut)
                         except FileNotFoundError:
