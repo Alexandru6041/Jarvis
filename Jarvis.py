@@ -1158,20 +1158,14 @@ while True:
             try:
                 options = Path('shortcut_list.json').read_text()
 <<<<<<< HEAD
-<<<<<<< HEAD
                 filename = inp[5:]
                 main_folder = os.getcwd()
                 file_loc = filename + ".txt"
 =======
-=======
->>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
                 print("Apps already added: ")
                 print(options)
                 filename = input("App Name: ")
                 file_loc =  location_working_folder + "/Apps/" + filename + ".txt"
-<<<<<<< HEAD
->>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
-=======
 >>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
                 shortcut = Path(str(file_loc)).read_text()
                 os.startfile(shortcut)
@@ -1442,13 +1436,10 @@ while True:
                         try:
                             options = Path('shortcut_list.json').read_text()
 <<<<<<< HEAD
-<<<<<<< HEAD
                             filename = text[5:]
                             main_folder = os.getcwd()
                             file_loc = filename + ".txt"
 =======
-=======
->>>>>>> parent of c54dd80 (open app function updated(the system detects automatically the app you want to open in the same input) + bug fixes)
                             print("Apps already added: ")
                             print(options)
                             filename = input("App Name: ")
