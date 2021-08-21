@@ -1282,7 +1282,7 @@ while True:
             
         if 'website' in inp:
             invalid = False
-            inp = input("Which is your desired website? ")
+            inp = input("Website: ")
             print("Starting " + str(inp) + "...")
             try:
                 print("Trying to connect through port 443...")
@@ -1524,53 +1524,6 @@ while True:
                         engine.say(ch(words))
                         engine.runAndWait()
 
-                    if 'internet' in text:
-                        engine.say("Do you want a website or just the browser?")
-                        engine.runAndWait()
-                        r = sr.Recognizer()
-                        with sr.Microphone() as source:
-                            audio_data = r.record(source, duration=1)
-                            print('Listening...')
-                            text = r.recognize_google(r.listen(source, timeout=5, phrase_time_limit=5, snowboy_configuration=None))
-                            print(text)
-                        if 'browser' in text:
-                            engine.say("Opening Firefox...")
-                            engine.runAndWait()
-                            try:
-                                os.startfile("C:/ProgramData/Microsoft/Windows/Start Menu/Programs/Firefox.lnk")
-                            except Exception:
-                                print("Could not found the shortcut in specified location!")
-                        if 'website' in text:
-                            r = sr.Recognizer()
-                            with sr.Microphone() as source:
-                                audio_data = r.record(source, duration=1)
-                                print("Listening to your desired website: ")
-                            #inp = input('Enter your desired browser: ')
-                                engine.say("Tell your desired browser...")
-                                engine.runAndWait()
-                                text = r.recognize_google(r.listen(source, timeout=5, phrase_time_limit=5, snowboy_configuration=None))
-                                print(text)
-                            invalid = False
-                            print("Starting " + str(text) + "...")
-                            try:
-                                print("Trying to connect through port 443...")
-                                time.sleep(1)
-                                requests.get("https://www." + text)
-                                time.sleep(1)
-                                www.open("www." + text) 
-                            except Exception:
-                                try:
-                                    print("Trying to connect through port 80...")
-                                    time.sleep(1)
-                                    requests.get("http://www." + text)
-                                    www.open("www." + text) 
-                                except Exception:
-                                    try:
-                                        requests.get("https://www.google.com")
-                                        print("INVALID URL!")
-                                    except Exception:
-                                        print("Unable to connect to Wi-Fi!")
-                                        Auto_wifi_connection()
 
                     if 'sleep' in text:
                         with open("Communication_Files/Sleep/main.txt") as file:
@@ -1619,14 +1572,6 @@ while True:
                         os.system('shutdown /s /t 6')
                         inp = input("")
 
-                    if 'Gmail' in text:
-                        print("Opening gmail...")
-                        engine.say("Opening gmail")
-                        engine.runAndWait()
-                        time.sleep(0.5)
-                        mail_url = 'https://mail.google.com/mail/u/0/#inbox'
-                        www.open(mail_url)
-                        
                     if 'phone number' in text:
                         print("Getting phone number data... ")
                         engine.say("Getting phone number data... ")
@@ -1677,8 +1622,8 @@ while True:
                                 string = results.prettify()
                                 string = re.sub('[^0-9]', '', string)
                                 string = string[4:]
-                                print("There are " + str(string) + " coronavirus cases in " + str(country_name) + " on " + str(date.today()) + '.')
-                                engine.say("There are " + str(string) + " coronavirus cases in " + str(country_name) + " on " + str(date.today()) + '.')
+                                print("There are " + str(string) + "coronavirus cases in " + str(country_name) + " on " + str(date.today()) + '.')
+                                engine.say("There are " + str(string) + "coronavirus cases in " + str(country_name) + " on " + str(date.today()) + '.')
                                 engine.runAndWait()
                             except AttributeError:
                                 engine.say("Unknown country, try again!")
