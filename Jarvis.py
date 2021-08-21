@@ -1138,8 +1138,6 @@ while True:
             System_info() 
         if "add app" in inp:
             file_explorer()
-        if 'exit' in inp:
-            exit_arack()
             
         if "open " in inp:
             try:
