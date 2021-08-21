@@ -1144,9 +1144,8 @@ while True:
         if "open " in inp:
             try:
                 options = Path('shortcut_list.json').read_text()
-                options = Path('shortcut_list.json').read_text()
                 filename = inp[5:]
-                file_loc = "D:/Python/Jarvis-main/Apps/" + filename + ".txt"
+                file_loc = "D:/Python/Jarvis/Apps/" + filename + ".txt"
                 shortcut = Path(str(file_loc)).read_text()
                 os.startfile(shortcut)
                 if(filename == "spotify" or filename == "Spotify" or filename == "SPOTIFY"):
@@ -1164,14 +1163,6 @@ while True:
             except Exception as e:
                 print(e)
             
-        if 'browser' in inp:
-            print("Starting Firefox...")
-            time.sleep(1)
-            try:
-                os.startfile("C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Firefox.lnk")
-            except Exception:
-                print("Shortut not found in specified location")
-
         if 'internet' in inp:
             locase_char = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
                            'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
@@ -1206,13 +1197,6 @@ while True:
                             print("Unable to connect to Wi-Fi!")
                             Auto_wifi_connection()
 
-            if 'browser' in inp:
-                print("Starting Firefox...")
-                time.sleep(1)
-                try:
-                    os.startfile("C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Firefox.lnk")
-                except Exception:
-                    print("Shourtcut not found in specified location!")
         if 'clear' in inp:
             def clear():
                 os.system('cls')
@@ -1416,7 +1400,7 @@ while True:
                         try:
                             options = Path('shortcut_list.json').read_text()
                             filename = text[5:]
-                            file_loc = "D:/Python/Jarvis-main/Apps/" + filename + ".txt"
+                            file_loc = "D:/Python/Jarvis/Apps/" + filename + ".txt"
                             shortcut = Path(str(file_loc)).read_text()
                             os.startfile(shortcut)
                         except FileNotFoundError:
