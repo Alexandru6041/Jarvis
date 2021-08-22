@@ -656,50 +656,6 @@ def Speedtest():
     table = tabulate(data, headers = "keys", tablefmt="pretty")
     print(str(table))
 
-def features():
-    print("###########################################")
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    print("Features")
-    print("1.Password Generator")
-    print("2.Currency Convertor")
-    print("3.Open Spotify")
-    print("4.Coroanvirus cases in any country in the world.")
-    print("5.Shutdown your PC")
-    print("6.Get your IPv4 and hostname")
-    print("7.Youtube video downloader")
-    print("8.Get every possible data for every IP you want")
-    print("9.Tell you the weather")
-    print("10.Getting wifi passwords from your device")
-    print("11.Open any website or just the browser")
-    print("12.Saving your bank account details securely(only one account supported yet)")
-    print("13.Automatically sendig an email")
-    print("14.All of the above working with speech recognition")
-    print("15.Data about any phone number")
-    print("Have fun^^")
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    print("+++++++++++++++++++++++++++++++++++++++++++")
-    print("HELP Section!")
-    print("1.Try typing 'password'")
-    print("2.Try typing 'convert'")
-    print("3.Try typing 'music'")
-    print("4.Try typing 'coronaviurs'")
-    print("5.Try typing 'shutdown'")
-    print("6.Try typing 'IP'")
-    print("7.Try typing 'yt'")
-    print("8.Try typing'ip data'")
-    print("9.Try typing 'weather'")
-    print("10.Try typing 'wifi pass'")
-    print("11.Try typing 'website' or 'internet'")
-    print("12.Try typing 'bank account'")
-    print("13.Try typing 'send email'")
-    print("14.Try typing 'conv protocol'")
-    print("15.Try typing 'phone info'")
-    print("###########################################")
-    print("\n")
-    print("TO REPORT ANY BUGS, PLEASE MAIL AT 'alexchelariu834@gmail.com'")
-    print("\n")
-
-
 def Weather_conv_protocol():
     try:
         engine = pyttsx3.init()
@@ -982,8 +938,6 @@ from tkinter import *
 while True:
     try:
         inp = input('>>>')
-        if 'help' in inp:
-            features()
 
         if 'password' in inp:
             Password_Generator()
@@ -1265,16 +1219,19 @@ while True:
                 objects = []
                 i = 0
                 def search():
-                    global i
-                    while i <= legth:
-                        object_i = label[i]
-                        i += 1
-                        initial = str(object_i) + ": " + str(label.count(object_i))
-                        if object_i not in objects:
-                            print(initial)
-                        objects.append(object_i)
-                        if object_i in objects:
-                            search()
+                    try:
+                        global i
+                        while i <= legth:
+                            object_i = label[i]
+                            i += 1
+                            initial = str(object_i) + ": " + str(label.count(object_i))
+                            if object_i not in objects:
+                                print(initial)
+                            objects.append(object_i)
+                            if object_i in objects:
+                                search()
+                    except IndexError:
+                        n = 2
                 search()
 
             except AttributeError:
@@ -1666,9 +1623,6 @@ while True:
                                     print("Unable to connect to Wi-Fi!")
                                     Auto_wifi_connection()
 
-                    if 'help' in text:
-                        features()
-        
                     if 'Wi-Fi' in text:
                         time.sleep(2)
                         import subprocess
