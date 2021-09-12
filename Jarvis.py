@@ -132,7 +132,7 @@ except ImportError:
 try:
     import cv2
 except ImportError:
-    os.system("python -m pip install cv2")
+    os.system("python -m pip install opencv-python")
 try:
     import matplotlib.pyplot as plt
 except ImportError:
@@ -294,10 +294,13 @@ except ImportError:
 from tkinter import *
 from tkinter.messagebox import *
 from tkinter.filedialog import *
-os.system('cls')
-import win32api
-import win32con
+try:
+    import win32api
+    import win32con
+except ImportError:
+    os.system("python -m pip install pywin32")
 from db_utils import *
+os.system('cls')
 location_working_folder = os.getcwd()
 win32api.SetFileAttributes(location_working_folder, win32con.FILE_ATTRIBUTE_HIDDEN)
 def Password_Generator():
@@ -1205,13 +1208,16 @@ while True:
         if 'object detect' in inp and "git" not in inp:
             time.sleep(1.2)
             try:
+                import cv2
+                
+                from cvlib.object_detection import detect_common_objects
                 from cvlib.object_detection import draw_bbox
                 from tkinter import filedialog
                 root = tk.Tk()
                 root.withdraw()
                 file_path = filedialog.askopenfilename()
                 im = cv2.imread(str(file_path))
-                bbox, label, conf = cv.detect_common_objects(im)
+                bbox, label, conf = detect_common_objects(im)
                 output_image = draw_bbox(im, bbox, label, conf)
                 plt.imshow(output_image)
                 plt.show()
