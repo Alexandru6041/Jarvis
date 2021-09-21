@@ -298,7 +298,7 @@ try:
     import win32api
     import win32con
 except ImportError:
-    os.system("python -m pip install pywin32")
+    os.system("python -m pip install pypwin32")
 from db_utils import *
 os.system('cls')
 location_working_folder = os.getcwd()
@@ -1209,7 +1209,6 @@ while True:
             time.sleep(1.2)
             try:
                 import cv2
-                
                 from cvlib.object_detection import detect_common_objects
                 from cvlib.object_detection import draw_bbox
                 from tkinter import filedialog
