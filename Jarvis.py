@@ -2,6 +2,105 @@ try:
     #JARVIS PROJECT
     import datetime
     import os
+    import requests
+    import platform
+    import time
+    def Auto_wifi_connection():
+        def createNewConnection(name, SSID, key):
+            config = """<?xml version=\"1.0\"?>
+        <WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1">
+            <name>"""+name+"""</name>
+            <SSIDConfig>
+                <SSID>
+                    <name>"""+SSID+"""</name>
+                </SSID>
+            </SSIDConfig>
+            <connectionType>ESS</connectionType>
+            <connectionMode>auto</connectionMode>
+            <MSM>
+                <security>
+                    <authEncryption>
+                        <authentication>WPA2PSK</authentication>
+                        <encryption>AES</encryption>
+                        <useOneX>false</useOneX>
+                    </authEncryption>
+                    <sharedKey>
+                        <keyType>passPhrase</keyType>
+                        <protected>false</protected>
+                        <keyMaterial>"""+key+"""</keyMaterial>
+                    </sharedKey>
+                </security>
+            </MSM>
+        </WLANProfile>"""
+            if platform.system() == "Windows":
+                command = "netsh wlan add profile filename=\""+name+".xml\""+" interface=Wi-Fi"
+                with open(name+".xml", 'w') as file:
+                    file.write(config)
+            elif platform.system() == "Linux":
+                command = "nmcli dev wifi connect '"+SSID+"' password '"+key+"'"
+            os.system(command)
+            if platform.system() == "Windows":
+                os.remove(name+".xml")
+
+        def connect(name, SSID):
+            if platform.system() == "Windows":
+                command = "netsh wlan connect name=\""+name + \
+                    "\" ssid=\""+SSID+"\" interface=Wi-Fi"
+            elif platform.system() == "Linux":
+                command = "nmcli con up "+SSID
+            os.system(command)
+
+        def displayAvailableNetworks():
+            if platform.system() == "Windows":
+                command = "netsh wlan show networks interface=Wi-Fi"
+            elif platform.system() == "Linux":
+                command = "nmcli dev wifi list"
+            os.system(command)
+
+        displayAvailableNetworks()
+        option = input("Do you want to register a new connection?(yes or no)")
+        if 'n' in option:
+            name = input("Name: ")
+            connect(name, name)
+            time.sleep(2)
+            try:
+                url = 'https://google.com'
+                timeout = 5
+                request = requests.get(url, timeout=5)
+                print("You are ready to go")
+            except(requests.ConnectionError, requests.Timeout, socket.gaierror, urllib3.exceptions.NewConnectionError, urllib3.exceptions.MaxRetryError, requests.exceptions.ConnectionError) as Exception:
+                print("I couldn't connect you to the Internet through Wi-Fi...")
+                print("TRY AGAIN WITH CORRECT CREDENTIALS!")
+                print(
+                    "If still not working, please contact your Internet service provider and somehow, get along with this issue!")
+                sys.exit()
+
+        if 'y' in option:
+            name = input("SSID: ")
+            key = input("Password: ")
+            createNewConnection(name, name, key)
+            connect(name, name)
+            time.sleep(2)
+            try:
+                timeout = 5
+                url = 'https://www.google.com'
+                request = requests.get(url, timeout=5)
+                print("New connection created!\nYou are ready to go!")
+            except(requests.ConnectionError, requests.Timeout, socket.gaierror, urllib3.exceptions.NewConnectionError, urllib3.exceptions.MaxRetryError, requests.exceptions.ConnectionError) as Exception:
+                print("I couldn't find a connection that matches: ")
+                print("SSID = " + name)
+                print("Password = " + key)
+                sys.exit()
+    print("Checking wifi connection...")
+    def check_wifi():
+        try:
+            url = 'https://www.google.com'
+            timeout = 5
+            request = requests.get(url, timeout=5)
+            print("Successfully! Status: 20 OK")
+        except(requests.ConnectionError, requests.Timeout) as Exception:
+            Auto_wifi_connection()
+    check_wifi()
     os.system("python -m pip install --upgrade pip")
     from turtle import stamp
     os.system('python -m pip install pipwin')
@@ -337,16 +436,6 @@ try:
             except ValueError:
                 print('Invalid lentgh!!!')
                 print("Error type: ValueError ")
-
-    def check_wifi():
-        try:
-            url = 'https://www.google.com'
-            timeout = 5
-            request = requests.get(url, timeout=5)
-            print("I'm ready!")
-        except(requests.ConnectionError, requests.Timeout) as Exception:
-            Auto_wifi_connection()        
-
     def news():
         from bs4 import BeautifulSoup 
         import requests 
@@ -443,90 +532,6 @@ try:
         Path('shortcut_list.json').write_text(shortcuts)
         
 
-    def Auto_wifi_connection():
-        def createNewConnection(name, SSID, key):
-            config = """<?xml version=\"1.0\"?>
-        <WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1">
-            <name>"""+name+"""</name>
-            <SSIDConfig>
-                <SSID>
-                    <name>"""+SSID+"""</name>
-                </SSID>
-            </SSIDConfig>
-            <connectionType>ESS</connectionType>
-            <connectionMode>auto</connectionMode>
-            <MSM>
-                <security>
-                    <authEncryption>
-                        <authentication>WPA2PSK</authentication>
-                        <encryption>AES</encryption>
-                        <useOneX>false</useOneX>
-                    </authEncryption>
-                    <sharedKey>
-                        <keyType>passPhrase</keyType>
-                        <protected>false</protected>
-                        <keyMaterial>"""+key+"""</keyMaterial>
-                    </sharedKey>
-                </security>
-            </MSM>
-        </WLANProfile>"""
-            if platform.system() == "Windows":
-                command = "netsh wlan add profile filename=\""+name+".xml\""+" interface=Wi-Fi"
-                with open(name+".xml", 'w') as file:
-                    file.write(config)
-            elif platform.system() == "Linux":
-                command = "nmcli dev wifi connect '"+SSID+"' password '"+key+"'"
-            os.system(command)
-            if platform.system() == "Windows":
-                os.remove(name+".xml")
-
-        def connect(name, SSID):
-            if platform.system() == "Windows":
-                command = "netsh wlan connect name=\""+name+"\" ssid=\""+SSID+"\" interface=Wi-Fi"
-            elif platform.system() == "Linux":
-                command = "nmcli con up "+SSID
-            os.system(command)
-            
-        def displayAvailableNetworks():
-            if platform.system() == "Windows":
-                command = "netsh wlan show networks interface=Wi-Fi"
-            elif platform.system() == "Linux":
-                command = "nmcli dev wifi list"
-            os.system(command)
-        
-        displayAvailableNetworks()
-        option = input("Do you want to register a new connection?(yes or no)")
-        if 'n' in option:
-            name = input("Name: ")
-            connect(name, name)
-            time.sleep(2)
-            try:
-                url = 'https://google.com'
-                timeout = 5
-                request = requests.get(url, timeout=5)
-                print("You are ready to go")
-            except(requests.ConnectionError, requests.Timeout, socket.gaierror, urllib3.exceptions.NewConnectionError, urllib3.exceptions.MaxRetryError, requests.exceptions.ConnectionError) as Exception:
-                print("I couldn't connect you to the Internet through Wi-Fi...")
-                print("TRY AGAIN WITH CORRECT CREDENTIALS!")
-                print("If still not working, please contact your Internet service provider and somehow, get along with this issue!")
-                sys.exit()
-
-        if 'y' in option:
-            name = input("SSID: ")
-            key = input("Password: ")
-            createNewConnection(name, name, key)
-            connect(name, name)
-            time.sleep(2)
-            try:
-                timeout = 5
-                url = 'https://www.google.com'
-                request = requests.get(url, timeout=5)
-                print("New connection created!\nYou are ready to go!")
-            except(requests.ConnectionError, requests.Timeout, socket.gaierror, urllib3.exceptions.NewConnectionError, urllib3.exceptions.MaxRetryError, requests.exceptions.ConnectionError) as Exception:
-                print("I couldn't find a connection that matches: ")
-                print("SSID = " + name)
-                print("Password = " + key)
-                sys.exit()
 
     def shutdown():
         current_dir = os.getcwd()
@@ -798,9 +803,7 @@ try:
         with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
             server.login(sender_mail, password=password)
             server.sendmail(sender_mail, mail_to_send, message.as_string())
-    print("Checking your wifi connection...")
-    time.sleep(2)
-    check_wifi()
+
     import pyodbc
     current_dir = os.getcwd()
     con_string = r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + str(current_dir) + "/Main_DB.accdb;"
