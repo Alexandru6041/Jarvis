@@ -7,40 +7,17 @@ try:
     import time
     def Auto_wifi_connection():
         def createNewConnection(name, SSID, key):
-            config = """<?xml version=\"1.0\"?>
-        <WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1">
-            <name>"""+name+"""</name>
-            <SSIDConfig>
-                <SSID>
-                    <name>"""+SSID+"""</name>
-                </SSID>
-            </SSIDConfig>
-            <connectionType>ESS</connectionType>
-            <connectionMode>auto</connectionMode>
-            <MSM>
-                <security>
-                    <authEncryption>
-                        <authentication>WPA2PSK</authentication>
-                        <encryption>AES</encryption>
-                        <useOneX>false</useOneX>
-                    </authEncryption>
-                    <sharedKey>
-                        <keyType>passPhrase</keyType>
-                        <protected>false</protected>
-                        <keyMaterial>"""+key+"""</keyMaterial>
-                    </sharedKey>
-                </security>
-            </MSM>
-        </WLANProfile>"""
-            if platform.system() == "Windows":
-                command = "netsh wlan add profile filename=\""+name+".xml\""+" interface=Wi-Fi"
-                with open(name+".xml", 'w') as file:
-                    file.write(config)
-            elif platform.system() == "Linux":
-                command = "nmcli dev wifi connect '"+SSID+"' password '"+key+"'"
-            os.system(command)
-            if platform.system() == "Windows":
-                os.remove(name+".xml")
+            with open("config.xml") as configuration_file:
+                config = configuration_file.read()
+                if platform.system() == "Windows":
+                    command = "netsh wlan add profile filename=\""+name+".xml\""+" interface=Wi-Fi"
+                    with open(name+".xml", 'w') as file:
+                        file.write(config)
+                elif platform.system() == "Linux":
+                    command = "nmcli dev wifi connect '"+SSID+"' password '"+key+"'"
+                os.system(command)
+                if platform.system() == "Windows":
+                    os.remove(name+".xml")
 
         def connect(name, SSID):
             if platform.system() == "Windows":
@@ -71,8 +48,7 @@ try:
             except(requests.ConnectionError, requests.Timeout, socket.gaierror, urllib3.exceptions.NewConnectionError, urllib3.exceptions.MaxRetryError, requests.exceptions.ConnectionError) as Exception:
                 print("I couldn't connect you to the Internet through Wi-Fi...")
                 print("TRY AGAIN WITH CORRECT CREDENTIALS!")
-                print(
-                    "If still not working, please contact your Internet service provider and somehow, get along with this issue!")
+                print("If still not working, please contact your Internet service provider and somehow, get along with this issue!")
                 sys.exit()
 
         if 'y' in option:
@@ -96,8 +72,8 @@ try:
         try:
             url = 'https://www.google.com'
             timeout = 5
-            request = requests.get(url, timeout=5)
-            print("Successfully! Status: 20 OK")
+            requests.get(url, timeout=timeout)
+            print("Successfully! Status: 200 OK")
         except(requests.ConnectionError, requests.Timeout) as Exception:
             Auto_wifi_connection()
     check_wifi()
@@ -515,7 +491,7 @@ try:
     def file_explorer():
         from tkinter import filedialog as fd
         apps = []
-        name = input("Enter the name of yuor shortcut(it should be the name of the app): ")
+        name = input("Enter the name of your shortcut(it should be the name of the app): ")
         main_folder = os.getcwd()
         window = tk.Tk()
         window.withdraw()
