@@ -5,6 +5,7 @@ try:
     import requests
     import platform
     import time
+    import socket
     def Auto_wifi_connection():
         def createNewConnection(name, SSID, key):
             with open("config.xml") as configuration_file:
