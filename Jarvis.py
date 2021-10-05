@@ -1,3 +1,6 @@
+from turtle import speed
+
+
 try:
     #JARVIS PROJECT
     import datetime
@@ -106,6 +109,10 @@ try:
         import ipaddress
     except ImportError:
         os.system('python -m pip install ipaddress')
+    try:
+        import linecache2 as linecache
+    except ImportError:
+        os.system("python -m pip install linecache2")
     try:
         import schedule
     except ImportError:
@@ -626,10 +633,23 @@ try:
         from tabulate import tabulate
         import speedtest
         st = speedtest.Speedtest()
-        upload_speed = round(st.upload() / 1_000_000, 2)
-        download_speed = round(st.download() / 1_000_000, 2)
+        upload_speed = st.upload()
+        download_speed = st.download()
+        upload_speed = upload_speed / 1_000_000
+        download_speed = download_speed / 1_000_000
+        speed_list = [str(upload_speed),"\n", str(download_speed)]
+        speed_file = open("speed.in", "w")
+        speed_file.writelines(speed_list)
+        time.sleep(0.5)
+        os.system("g++ variable.cpp -o variable.exe")
+        download_speed = download_speed * 100
+        download_speed = int(download_speed)
+        download_speed = download_speed / 100.0
+        
+        upload_speed = upload_speed * 100
+        upload_speed = int(upload_speed)
+        upload_speed = upload_speed / 100.0
         speed_combined = upload_speed + download_speed
-        full_speed = round(speed_combined / 1_000_000, 2)
         ping = st.results.ping
         server = []
         st.get_servers(server)
@@ -641,6 +661,9 @@ try:
         }
         table = tabulate(data, headers = "keys", tablefmt="pretty")
         print(str(table))
+        file = open("speed.in", "r+")
+        file.truncate(0)
+        file.close()
 
     def Weather_conv_protocol():
         try:
@@ -1090,6 +1113,7 @@ try:
                         space_key = Key.space
                         keyboard = Controller()
                         keyboard.press(space_key)
+                        keyboard.release(space_key)
                         keyboard.release(space_key)
                 except FileNotFoundError:
                     print("File not found")
