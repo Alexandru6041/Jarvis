@@ -5,7 +5,10 @@ try:
     #JARVIS PROJECT
     import datetime
     import os
-    import requests
+    try:
+        import requests
+    except ImportError:
+        os.system("pip install requests-2.26.0-py2.py3-none-any.whl")
     import platform
     import time
     import socket
@@ -76,8 +79,8 @@ try:
         try:
             url = 'https://www.google.com'
             timeout = 5
-            requests.get(url, timeout=timeout)
-            print("Successfully! Status: 200 OK")
+            r = requests.get(url, timeout=timeout)
+            print("Status: " + str(r.status_code))
         except(requests.ConnectionError, requests.Timeout) as Exception:
             Auto_wifi_connection()
     check_wifi()
