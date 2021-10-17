@@ -1,17 +1,20 @@
-from turtle import speed
-
-
+#JARVIS PROJECT
 try:
-    #JARVIS PROJECT
+    print("Jarvis may restart during the installation process")
+    time.sleep(1.5)
     import datetime
     import os
     try:
         import requests
     except ImportError:
         os.system("pip install requests-2.26.0-py2.py3-none-any.whl")
+        time.sleep(2)
+        import requests
+        os.system("python Jarvis.py")
     import platform
     import time
     import socket
+    from turtle import speed
     def Auto_wifi_connection():
         def createNewConnection(name, SSID, key):
             with open("config.xml") as configuration_file:
@@ -386,6 +389,7 @@ try:
         import win32con
     except ImportError:
         os.system("python -m pip install pypwin32")
+        os.system("python Jarvis.py")
     from db_utils import *
     os.system('cls')
     location_working_folder = os.getcwd()
@@ -798,7 +802,7 @@ try:
         mail_to_send = Path("Email.txt").read_text()
         message["From"] = sender_mail
         message["To"] = mail_to_send
-        password_reset = Path("Universal_PIN.txt").read_text()
+        password_reset = Path("Universal_PIN.txt").read_text() 
         text = "Hello this is Jarvis assistance!\nPIN: " + password_reset + "\n" + "If u didn't request a PIN reset, just ignore this email!\n" + "Have a great day!\n" + "Best Regards,\n" + "Jarvis" 
         part1 = MIMEText(text, "plain")
         message.attach(part1)
