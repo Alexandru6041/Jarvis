@@ -1,9 +1,10 @@
 #JARVIS PROJECT
 try:
     print("Jarvis may restart during the installation process")
-    time.sleep(1.5)
     import datetime
+    import time
     import os
+    time.sleep(1.5)
     try:
         import requests
     except ImportError:
@@ -12,7 +13,6 @@ try:
         import requests
         os.system("python Jarvis.py")
     import platform
-    import time
     import socket
     from turtle import speed
     def Auto_wifi_connection():
@@ -649,6 +649,9 @@ try:
         speed_file.writelines(speed_list)
         time.sleep(0.5)
         os.system("g++ variable.cpp -o variable.exe")
+        time.sleep(1)
+        win32api.WinExec('variable.exe')
+        time.sleep(0.5)
         download_speed = download_speed * 100
         download_speed = int(download_speed)
         download_speed = download_speed / 100.0
@@ -1214,6 +1217,8 @@ try:
                                 print("Holder Name: " + row[2])
                                 print("CVV: " + row[3])
                                 print("Expiration_Date: " + row[4])
+                        if pin_input != pin:
+                            print("Incorect Credentials! Try Again.")
                 except pyodbc.Error as e:
                     print("Error: ", e)
             if 'object detect' in inp and "git" not in inp:
