@@ -534,6 +534,7 @@ try:
             print(ch(words))
             time.sleep(1)        
             os.system("shutdown /s /t 3")
+            sys.exit()
 
     def open_app():
         #Move app shortcuts into app folder
@@ -1192,10 +1193,18 @@ try:
                         holder_name = input("Enter your holdername: ")
                         cvv = input("Enter your cvv(found on the back of the credit/debit card): ")
                         exp_date = input("Enter your card's expiration date: ")
+                        def acc():
+                            inside_data = cursor.execute('SELECT * FROM Bank_Details')
+                            data = cursor.fetchall()
+                            for row in data:
+                                inside_data = row[5]
+                                return inside_data
+                        account_id = acc()
+                        account_id= int(account_id) + 1
                         new_user = (
-                            (card_number,currency,holder_name,cvv,exp_date)
+                            (card_number,currency,holder_name,cvv,exp_date,account_id)
                         )
-                        cursor.execute('INSERT INTO Bank_Details VALUES (?,?,?,?,?)', new_user)
+                        cursor.execute('INSERT INTO Bank_Details VALUES (?,?,?,?,?,?)', new_user)
                         conn.commit()
                         print("Data Inserted")
                     if "no" in q:
