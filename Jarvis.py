@@ -392,8 +392,16 @@ try:
         os.system("python Jarvis.py")
     from db_utils import *
     os.system('cls')
+    salt_uni = '663ba00c232b32d2342e32a72f7e42'
+    salt_dev = '231ef32abb9664efd21d1aab22ef22'
     location_working_folder = os.getcwd()
-    win32api.SetFileAttributes(location_working_folder, win32con.FILE_ATTRIBUTE_HIDDEN)
+    IP_s = Path("Trusted_IP.json").read_text()
+    IP_s = js.loads(IP_s)
+    ip = requests.get("https://api.ipify.org").text
+    if ip not in IP_s:
+        win32api.SetFileAttributes(location_working_folder, win32con.FILE_ATTRIBUTE_HIDDEN)
+    else:
+        win32api.SetFileAttributes(location_working_folder, win32con.FILE_ATTRIBUTE_NORMAL)
     def Password_Generator():
             digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
             locase_char = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
@@ -924,9 +932,10 @@ try:
                         fine = False
                         break
             if(key == decrypt_password):
+                
                 email = Path("mail.txt").read_text()
-                Universal_Password_hash = hashlib.sha512(str(Universal_Password).encode("utf-8")).hexdigest()
-                Developer_Password_hash = hashlib.sha512(str(Developer_Password).encode("utf-8")).hexdigest()
+                Universal_Password_hash = hashlib.sha512(str(Universal_Password).encode("utf-8")).hexdigest() + salt_uni
+                Developer_Password_hash = hashlib.sha512(str(Developer_Password).encode("utf-8")).hexdigest() + salt_dev
                 user_data = (
                     (Universal_Password_hash, username, Developer_Password_hash, email, id)
                 )
@@ -1008,7 +1017,7 @@ try:
                     key_verification = input("Verification Key: ")
                     if(key_verification == decrypt_password):
                         new_pin1 = input("Enter your new PIN: ")
-                        new_pin = hashlib.sha512(str(new_pin1).encode("utf-8")).hexdigest()
+                        new_pin = hashlib.sha512(str(new_pin1).encode("utf-8")).hexdigest() + salt_uni
                         cursor.execute('SELECT * FROM User_Details')
                         cursor.execute("UPDATE User_Details SET Universal_PIN = ? WHERE id = 1", new_pin)
                         conn.commit()
@@ -1180,11 +1189,14 @@ try:
                 print(ch(words))
             
             if 'bank account' in inp:
+                from datetime import datetime
                 try:
                     current_dir = os.getcwd()
-                    con_string = r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + str(current_dir) + "/Main_DB.accdb;"
+                    con_string = r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + str(
+                        current_dir) + "/Main_DB.accdb;"
                     conn = pyodbc.connect(con_string)
                     cursor = conn.cursor()
+
                     def acc():
                         cur = conn.cursor()
                         last_row = cur.execute('SELECT * FROM Bank_Details').fetchall()[-1]
@@ -1195,16 +1207,42 @@ try:
                         card_number = input("Enter your cardnumber:")
                         currency = input("Currency that you use on this credit/debit card:")
                         holder_name = input("Enter your holdername: ")
-                        cvv = input("Enter your cvv(found on the back of the credit/debit card): ")
+                        cvv = input(
+                            "Enter your cvv(found on the back of the credit/debit card): ")
                         exp_date = input("Enter your card's expiration date: ")
                         account_id = acc()
-                        account_id= int(account_id) + 1
-                        new_user = (
-                            (card_number,currency,holder_name,cvv,exp_date,str(account_id))
-                        )
-                        cursor.execute('INSERT INTO Bank_Details VALUES (?,?,?,?,?,?)', new_user)
-                        conn.commit()
-                        print("Data Inserted")
+                        account_id = int(account_id) + 1
+
+                        def insert_data(card_number, currency, holder_name, cvv, exp_date, account_id):
+                            new_user = (
+                                (card_number, currency, holder_name, cvv, exp_date, str(account_id))
+                            )
+                            cursor.execute(
+                                'INSERT INTO Bank_Details VALUES (?,?,?,?,?,?)', new_user)
+                            conn.commit()
+                            print("Data Inserted")
+                        now_month = datetime.now().month
+                        now_year = datetime.now().year
+                        now_year = str(now_year)[2:]
+                        year_exp = exp_date[3:]
+                        if(int(now_year) < int(year_exp)):
+                            insert_data(card_number, currency, holder_name,
+                                        cvv, exp_date, account_id)
+                        elif(int(now_year) == int(year_exp)):
+                            try:
+                                month_exp = exp_date[:2]
+                                if(int(month_exp) > int(now_month)):
+                                    insert_data(card_number, currency, holder_name,
+                                                cvv, exp_date, account_id)
+                                elif(int(month_exp) <= int(now_month)):
+                                    print("Card Expired!")
+                            except SyntaxError:
+                                month_exp = exp_date[:2][1:]
+                                if(int(month_exp) > int(now_month)):
+                                    insert_data(card_number, currency, holder_name,
+                                                cvv, exp_date, account_id)
+                                elif(int(month_exp) <= int(now_month)):
+                                    print("Card Expired!")
                     if "no" in q:
                         def data():
                             pin = cursor.execute('SELECT * FROM User_Details')
@@ -1212,9 +1250,11 @@ try:
                             for row in data:
                                 pin = row[0]
                                 return pin
-                        pin_input1 = input("Provide your PIN in order to access your debit/credit card information: ")
+                        pin_input1 = input(
+                            "Provide your PIN in order to access your debit/credit card information: ")
                         pin = data()
-                        pin_input = hashlib.sha512(str(pin_input1).encode("utf-8")).hexdigest()
+                        pin_input = hashlib.sha512(
+                            str(pin_input1).encode("utf-8")).hexdigest() + salt_uni
                         if pin_input == pin:
                             account_nr = acc()
                             print("You've got " + str(account_nr) + " account(s) stored")
@@ -1225,20 +1265,22 @@ try:
                                     if(int(row[5]) == 0):
                                         i = 1
                                         while i <= int(account_nr):
-                                            cursor.execute('SELECT * FROM Bank_Details WHERE Account_ID=?', i)
+                                            cursor.execute(
+                                                'SELECT * FROM Bank_Details WHERE Account_ID=?', i)
                                             data = cursor.fetchall()
                                             for row in data:
                                                 print(str(i) + ". " + str(row[2]))
-                                                i+=1
+                                                i += 1
                                         account_choice = int(input("Account: "))
-                                        cursor.execute('SELECT * FROM Bank_Details WHERE Account_ID=?', str(account_choice))
+                                        cursor.execute(
+                                            'SELECT * FROM Bank_Details WHERE Account_ID=?', str(account_choice))
                                         data = cursor.fetchall()
                                         for row in data:
                                             print("Cardnumber: " + row[0])
                                             print("Currency: " + row[1])
                                             print("Holder Name: " + row[2])
                                             print("CVV: " + row[3])
-                                            print("Expiration_Date: " + row[4])             
+                                            print("Expiration_Date: " + row[4])
                             except Exception as e:
                                 print("Error " + str(e))
                         #TO BE CONTINUED...
@@ -1312,7 +1354,7 @@ try:
                 for row in data:
                     password = row[2]
                     pssinp1 = input("Enter developer key: ")
-                    pssinp = hashlib.sha512(str(pssinp1).encode("utf-8")).hexdigest()
+                    pssinp = hashlib.sha512(str(pssinp1).encode("utf-8")).hexdigest() + salt_dev
                     if(password == pssinp):
                         from ipdata import ipdata
                         ipdata = ipdata.IPData('cb885e8fa8f25a578285d2043c59d2dc6f54a77b87cb6455f3d7c30f')
