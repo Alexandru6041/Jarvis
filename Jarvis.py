@@ -1180,12 +1180,16 @@ try:
                 print(ch(words))
             
             if 'bank account' in inp:
-                import pyodbc
                 try:
                     current_dir = os.getcwd()
                     con_string = r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + str(current_dir) + "/Main_DB.accdb;"
                     conn = pyodbc.connect(con_string)
                     cursor = conn.cursor()
+                    def acc():
+                        cur = conn.cursor()
+                        last_row = cur.execute('SELECT * FROM Bank_Details').fetchall()[-1]
+                        data = last_row[5]
+                        return data
                     q = input("Do you want to create a new account? ")
                     if "yes" in q:
                         card_number = input("Enter your cardnumber:")
@@ -1193,16 +1197,10 @@ try:
                         holder_name = input("Enter your holdername: ")
                         cvv = input("Enter your cvv(found on the back of the credit/debit card): ")
                         exp_date = input("Enter your card's expiration date: ")
-                        def acc():
-                            inside_data = cursor.execute('SELECT * FROM Bank_Details')
-                            data = cursor.fetchall()
-                            for row in data:
-                                inside_data = row[5]
-                                return inside_data
                         account_id = acc()
                         account_id= int(account_id) + 1
                         new_user = (
-                            (card_number,currency,holder_name,cvv,exp_date,account_id)
+                            (card_number,currency,holder_name,cvv,exp_date,str(account_id))
                         )
                         cursor.execute('INSERT INTO Bank_Details VALUES (?,?,?,?,?,?)', new_user)
                         conn.commit()
@@ -1216,16 +1214,34 @@ try:
                                 return pin
                         pin_input1 = input("Provide your PIN in order to access your debit/credit card information: ")
                         pin = data()
-                        table_data = cursor.execute('SELECT * FROM Bank_Details')
-                        data = cursor.fetchall()
                         pin_input = hashlib.sha512(str(pin_input1).encode("utf-8")).hexdigest()
                         if pin_input == pin:
-                            for row in data:
-                                print("Cardnumber: " + row[0])
-                                print("Currency: " + row[1])
-                                print("Holder Name: " + row[2])
-                                print("CVV: " + row[3])
-                                print("Expiration_Date: " + row[4])
+                            account_nr = acc()
+                            print("You've got " + str(account_nr) + " account(s) stored")
+                            data = cursor.execute('SELECT * FROM Bank_Details')
+                            info = cursor.fetchall()
+                            try:
+                                for row in info:
+                                    if(int(row[5]) == 0):
+                                        i = 1
+                                        while i <= int(account_nr):
+                                            cursor.execute('SELECT * FROM Bank_Details WHERE Account_ID=?', i)
+                                            data = cursor.fetchall()
+                                            for row in data:
+                                                print(str(i) + ". " + str(row[2]))
+                                                i+=1
+                                        account_choice = int(input("Account: "))
+                                        cursor.execute('SELECT * FROM Bank_Details WHERE Account_ID=?', str(account_choice))
+                                        data = cursor.fetchall()
+                                        for row in data:
+                                            print("Cardnumber: " + row[0])
+                                            print("Currency: " + row[1])
+                                            print("Holder Name: " + row[2])
+                                            print("CVV: " + row[3])
+                                            print("Expiration_Date: " + row[4])             
+                            except Exception as e:
+                                print("Error " + str(e))
+                        #TO BE CONTINUED...
                         if pin_input != pin:
                             print("Incorect Credentials! Try Again.")
                 except pyodbc.Error as e:
