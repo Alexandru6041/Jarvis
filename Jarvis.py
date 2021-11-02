@@ -1217,8 +1217,7 @@ try:
                             new_user = (
                                 (card_number, currency, holder_name, cvv, exp_date, str(account_id))
                             )
-                            cursor.execute(
-                                'INSERT INTO Bank_Details VALUES (?,?,?,?,?,?)', new_user)
+                            cursor.execute('INSERT INTO Bank_Details VALUES (?,?,?,?,?,?)', new_user)
                             conn.commit()
                             print("Data Inserted")
                         now_month = datetime.now().month
@@ -1265,8 +1264,7 @@ try:
                                     if(int(row[5]) == 0):
                                         i = 1
                                         while i <= int(account_nr):
-                                            cursor.execute(
-                                                'SELECT * FROM Bank_Details WHERE Account_ID=?', i)
+                                            cursor.execute('SELECT * FROM Bank_Details WHERE Account_ID=?', i)
                                             data = cursor.fetchall()
                                             for row in data:
                                                 print(str(i) + ". " + str(row[2]))
