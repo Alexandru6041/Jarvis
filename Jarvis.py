@@ -1,6 +1,5 @@
 #JARVIS PROJECT
 try:
-    print("Jarvis may restart during the installation process")
     import datetime
     import time
     import os
@@ -803,9 +802,6 @@ try:
                     print("Humidity: " + str(current_humidiy) + "%")
                     print("Weather Condition: " + str(weather_description))
 
-    def Configure_WIFI():
-        www.open('http://192.168.0.1/webpages/login.html?t=1516243669548')
-
     def change_pasword():
         sender_mail = 'help.jarvisassistant@gmail.com'
         password = "vp-MJKYQZ()(1!Y"
@@ -975,7 +971,7 @@ try:
             if 'music' in inp:
                 music()
             if 'git' in inp:
-                os.system(inp) 
+                os.system(inp)
             if 'change pin' in inp:
                 primary_table = cursor.execute("SELECT * FROM User_Details")
                 data = cursor.fetchall()
