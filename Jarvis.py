@@ -1138,7 +1138,10 @@ try:
                     continue
                 except Exception as e:
                     print(e)
-                
+            if "list app" or "show app" in inp:
+                options = Path("shortcut_list.json").read_text()
+                print("Apps Already Added:\n" + options)
+
             if 'internet' in inp:
                 locase_char = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
                             'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
